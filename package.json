@@ -13,9 +13,11 @@
     "author": "Apache Cordova Team",
     "license": "Apache-2.0",
     "dependencies": {
+        "cordova": "^9.0.0",
         "cordova-plugin-device": "^2.0.2",
         "cordova-plugin-file": "^6.0.1",
-        "cordova-plugin-nativestorage": "^2.3.2"
+        "cordova-plugin-nativestorage": "^2.3.2",
+        "mobileui": "^1.1.19"
     },
     "cordova": {
         "plugins": {
