@@ -1,10 +1,10 @@
-# Node
-npm-debug.log
-/node_modules
-
-# Cordova
-/platforms
-/plugins
-
-# res
-resources/signing
+node_modules
+.idea
+.temp
+.sass-cache
+coverage
+platforms
+*.swp
+*.swo
+*.log
+*.DS_Store
