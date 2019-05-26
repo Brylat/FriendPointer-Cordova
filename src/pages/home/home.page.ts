@@ -72,6 +72,9 @@ export class HomePage {
 
 	public async createUser() {
 		await this.databaseService.createOrUpdateUser({age: 23, description: "sds", localization: new firestore.GeoPoint(23,23), name: "AndUpdat", status: 1, surname: "Jan"});
+	}
+	public async updateUserLocalization() {
+		await this.databaseService.updateCurrentUserLocation(new firestore.GeoPoint(66.66, 66.66));
 		console.log(await this.databaseService.getCurrentUserData());
 	}
 
