@@ -10,3 +10,5 @@ platforms
 *.DS_Store
 www
 plugins
+.sourcemaps
+ul_web_hooks
