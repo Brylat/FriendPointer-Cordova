@@ -11,6 +11,8 @@ import { CallService } from '../../services/call.service';
 import { MapsService } from '../../services/maps.service';
 import { InAppBrowserService } from '../../services/in-app-browser.service';
 import { data } from './home-data';
+import { DatabaseService } from '../../services/database.service';
+import { firestore } from 'firebase/app';
 
 @Component({
 	templateUrl: 'home.html',
@@ -24,19 +26,22 @@ export class HomePage {
 	private mapsService: MapsService;
 	private browserService: InAppBrowserService;
 	private nav: Nav;
+	private databaseService: DatabaseService;
 
 	constructor(
 		emailService: EmailService,
 		callService: CallService,
 		mapsService: MapsService,
 		browserService: InAppBrowserService,
-		nav: Nav
+		nav: Nav,
+		databaseService: DatabaseService
 	) {
 		this.emailService = emailService;
 		this.callService = callService;
 		this.mapsService = mapsService;
 		this.browserService = browserService;
 		this.nav = nav;
+		this.databaseService = databaseService;
 		this.initTiles();
 	}
 
@@ -58,6 +63,16 @@ export class HomePage {
 
 	public callUs() {
 		this.callService.call(data.phoneNumber);
+	}
+
+	public async getAllUsers() {
+		let x = await this.databaseService.getAllUsers();
+		console.log(x);
+	}
+
+	public async createUser() {
+		await this.databaseService.createOrUpdateUser({age: 23, description: "sds", localization: new firestore.GeoPoint(23,23), name: "AndUpdat", status: 1, surname: "Jan"});
+		console.log(await this.databaseService.getCurrentUserData());
 	}
 
 	private initTiles(): void {
