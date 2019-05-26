@@ -8,4 +8,4 @@ platforms
 *.swo
 *.log
 *.DS_Store
-www/build
+www
