@@ -75,7 +75,8 @@ export class HomePage {
 	}
 	public async updateUserLocalization() {
 		await this.databaseService.updateCurrentUserLocation(new firestore.GeoPoint(66.66, 66.66));
-		console.log(await this.databaseService.getCurrentUserData());
+		console.log(await this.databaseService.getAllFriendsData());
+		//console.log(await this.databaseService.getAllFriends());
 	}
 
 	private initTiles(): void {
