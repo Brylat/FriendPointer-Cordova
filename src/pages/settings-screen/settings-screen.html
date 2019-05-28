@@ -21,28 +21,28 @@
 
 					<ion-item>
 						<ion-label fixed>Imie</ion-label>
-						<ion-input type="text"></ion-input>
+						<ion-input type="text" [(ngModel)]="name"></ion-input>
 					</ion-item>
 			
 					<ion-item>
 						<ion-label fixed>Nazwisko</ion-label>
-						<ion-input type="text"></ion-input>
+						<ion-input type="text" [(ngModel)]="surname"></ion-input>
 					</ion-item>
 			</ion-list>
 			<div padding>
-				<button ion-button color="primary" block>Zmień dane personalne</button>
+				<button ion-button color="primary" block (click)="updateNameSurname()">Zmień dane personalne</button>
 			</div>
 
 			<ion-list>
 
 					<ion-item>
 						<ion-label stacked>Opis</ion-label>
-						<ion-input type="text"></ion-input>
+						<ion-input type="text" [(ngModel)]="destription"></ion-input>
 					</ion-item>
 			
 			</ion-list>
 			<div padding>
-				<button ion-button color="primary" block>Zaktualizuj opis</button>
+				<button ion-button color="primary" block (click)="updateDestription()">Zaktualizuj opis</button>
 			</div>
 			<ion-fab left bottom>
 					<button ion-fab color="light" style="width: 100px">
