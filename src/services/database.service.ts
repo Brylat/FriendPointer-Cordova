@@ -3,33 +3,34 @@ import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
 import { firestore } from 'firebase/app';
+import firestoreInstance = firebase.firestore;
 
 @Injectable()
 export class DatabaseService {
     constructor(private authService: AuthService) { }
 
-    public async getCurrentUserData() {
-        const snapshot = await firebase.firestore().collection('users')
+    public async getCurrentUserData(): Promise<User> {
+        const snapshot = await firestoreInstance().collection('users')
             .doc(this.authService.getUID()).get();
-        return snapshot.data();
+        return snapshot.data() as User;
     }
 
     public async createOrUpdateUser(user: User) {
-        await firebase.firestore().collection('users')
+        await firestoreInstance().collection('users')
             .doc(this.authService.getUID())
             .set(user, { merge: true });
     }
 
     public async updateCurrentUserLocation(newLocalizatation: firestore.GeoPoint) {
-        await firebase.firestore().collection('users')
+        await firestoreInstance().collection('users')
             .doc(this.authService.getUID())
             .update({ localization: newLocalizatation });
     }
 
     public async addFriend(uid: string) {
-        var docRef = await firebase.firestore().collection('users')
+        var docRef = await firestoreInstance().collection('users')
             .doc(this.authService.getUID());
-        firebase.firestore().runTransaction(transaction => {
+            firestoreInstance().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
                 const largerArray = snapshot.get('friends');
                 largerArray.push(uid);
@@ -39,9 +40,9 @@ export class DatabaseService {
     }
 
     public async deleteFriend(uid: string) {
-        var docRef = await firebase.firestore().collection('users')
+        var docRef = await firestoreInstance().collection('users')
             .doc(this.authService.getUID());
-        firebase.firestore().runTransaction(transaction => {
+        firestoreInstance().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
                 const largerArray: any[] = snapshot.get('friends');
                 transaction.update(docRef, 'friends', largerArray.filter(x => x !== uid));
@@ -50,10 +51,11 @@ export class DatabaseService {
     }
 
     public async getAllFriendsData() {
-        const snapshot = await firebase.firestore().collection('users')
+        const snapshot = await firestoreInstance().collection('users')
             .doc(this.authService.getUID()).get();
-        const friendsIds = snapshot.data().friends;
-        const usersRef = firebase.firestore().collection('users');
+        let friendsIds = snapshot.data().friends;
+        if(!friendsIds) friendsIds = [];
+        const usersRef = firestoreInstance().collection('users');
         let users = {};
         try {
             users = (await Promise.all(friendsIds.map(id => usersRef.doc(id).get())))
@@ -67,9 +69,10 @@ export class DatabaseService {
         return users;
     }
 
-    public async getAllUsers() {
-        const snapshot = await firebase.firestore().collection('users').get()
-        return snapshot.docs.map(doc => doc.data());
+    public async getAllUsers(): Promise<User[]> {
+        const snapshot = await firestoreInstance().collection('users').get()
+        return snapshot.docs.map(doc => doc.data() as User);
     }
+
 
 }
