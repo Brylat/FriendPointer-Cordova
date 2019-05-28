@@ -45,25 +45,27 @@
 				<button ion-button color="primary" block (click)="updateDestription()">Zaktualizuj opis</button>
 			</div>
 			<ion-fab left bottom>
-					<button ion-fab color="light" style="width: 100px">
+					<button ion-fab color="light" style="width: 120px;">
 						Zmień status
 						<ion-icon name="arrow-dropright"></ion-icon>
 					</button>
 					<ion-fab-list side="right">
-						<button ion-fab>
-							D
+						<button ion-fab (click)="updateStatus(1)" style="background-color: green">
+							<ion-icon name="happy"></ion-icon>
 						</button>
-						<button ion-fab>
-							ZW
+						<button ion-fab (click)="updateStatus(2)" style="background-color: yellow">
+							<ion-icon name="people"></ion-icon>
 						</button>
-						<button ion-fab>
-							NW
-						</button>
-						<button ion-fab>
-							ND
+						<button ion-fab (click)="updateStatus(3)" style="background-color: red">
+							<ion-icon name="key"></ion-icon>
 						</button>
 					</ion-fab-list>
 				</ion-fab>
 		</ion-card-content>	
+	</ion-card>
+	<ion-card>
+		<ion-card-content>
+			{{ statusText }}
+		</ion-card-content>
 	</ion-card>
 </ion-content>
