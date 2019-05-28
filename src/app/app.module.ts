@@ -11,6 +11,7 @@ import { ComponentsModule } from '../pages/components/components.module';
 import { GoogleMapsModule } from '../pages/google-maps/google-maps.module';
 import { HomeModule } from '../pages/home/home.module';
 import { SlideBoxModule } from '../pages/slide-box/slide-box.module';
+import { SettingsScreenModule } from '../pages/settings-screen/settings-screen.module';
 import { WordpressModule } from '../pages/wordpress/wordpress.module';
 import { MyApp } from './app.component';
 import { AngularFireModule } from 'angularfire2';
@@ -39,6 +40,7 @@ import { SignupPage } from '../pages/signup/signup';
 		GoogleMapsModule,
 		HomeModule,
 		SlideBoxModule,
+		SettingsScreenModule,
 		WordpressModule
 	],
 	bootstrap: [IonicApp],

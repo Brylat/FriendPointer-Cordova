@@ -1,0 +1,69 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Settings screen</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+
+		<ion-card-content>
+			<h2 class="card-title">
+					<ion-icon name='person' item-left style="color: #d03e84"></ion-icon>  Profil & Ustawienia
+			</h2>
+			<p>
+				Zmień ustawienia swojego konta bądź status.
+			</p>
+			<ion-list>
+
+					<ion-item>
+						<ion-label fixed>Imie</ion-label>
+						<ion-input type="text"></ion-input>
+					</ion-item>
+			
+					<ion-item>
+						<ion-label fixed>Nazwisko</ion-label>
+						<ion-input type="text"></ion-input>
+					</ion-item>
+			</ion-list>
+			<div padding>
+				<button ion-button color="primary" block>Zmień dane personalne</button>
+			</div>
+
+			<ion-list>
+
+					<ion-item>
+						<ion-label stacked>Opis</ion-label>
+						<ion-input type="text"></ion-input>
+					</ion-item>
+			
+			</ion-list>
+			<div padding>
+				<button ion-button color="primary" block>Zaktualizuj opis</button>
+			</div>
+			<ion-fab left bottom>
+					<button ion-fab color="light" style="width: 100px">
+						Zmień status
+						<ion-icon name="arrow-dropright"></ion-icon>
+					</button>
+					<ion-fab-list side="right">
+						<button ion-fab>
+							D
+						</button>
+						<button ion-fab>
+							ZW
+						</button>
+						<button ion-fab>
+							NW
+						</button>
+						<button ion-fab>
+							ND
+						</button>
+					</ion-fab-list>
+				</ion-fab>
+		</ion-card-content>	
+	</ion-card>
+</ion-content>
