@@ -1,13 +1,14 @@
-# Node
-npm-debug.log
-/node_modules
-
-# Cordova
-/platforms
-/plugins
-
-# res
-resources/signing
-
-# IDE files
-/.idea/
+node_modules
+.idea
+.temp
+.sass-cache
+coverage
+platforms
+*.swp
+*.swo
+*.log
+*.DS_Store
+www
+plugins
+.sourcemaps
+ul_web_hooks

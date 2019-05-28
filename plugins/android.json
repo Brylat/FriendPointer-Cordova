@@ -1,0 +1,46 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-browsertab": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-buildinfo": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-customurlscheme": {
+      "URL_SCHEME": "io.ionic.starter",
+      "ANDROID_SCHEME": " ",
+      "ANDROID_HOST": " ",
+      "ANDROID_PATHPREFIX": "/",
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-ionic-webview": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "cordova-universal-links-plugin": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
+    "ionic-plugin-keyboard": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    }
+  },
+  "dependent_plugins": {}
+}
