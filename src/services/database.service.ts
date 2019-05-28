@@ -86,7 +86,6 @@ export class DatabaseService {
             .set(event, { merge: true });
     }
 
-
     public async addParticipant(eventId: string, uid: string) {
         var docRef = await firestoreInstance().collection('events')
             .doc(eventId);
