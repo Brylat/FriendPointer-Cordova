@@ -74,5 +74,39 @@ export class DatabaseService {
         return snapshot.docs.map(doc => doc.data() as User);
     }
 
+    public async getAllEvents(): Promise<Event[]> {
+        //add restriction date
+        const snapshot = await firestoreInstance().collection('events').get()
+        return snapshot.docs.map(doc => doc.data() as Event);
+    }
 
+    public async createOrUpdateEvent(event: Event) {
+        await firestoreInstance().collection('events')
+            .doc(this.authService.getUID())
+            .set(event, { merge: true });
+    }
+
+
+    public async addParticipant(eventId: string, uid: string) {
+        var docRef = await firestoreInstance().collection('events')
+            .doc(eventId);
+            firestoreInstance().runTransaction(transaction => {
+            return transaction.get(docRef).then(snapshot => {
+                const largerArray = snapshot.get('participants');
+                largerArray.push(uid);
+                transaction.update(docRef, 'participants', largerArray);
+            });
+        });
+    }
+
+    public async deleteParticipant(eventId: string, uid: string) {
+        var docRef = await firestoreInstance().collection('events')
+            .doc(eventId);
+        firestoreInstance().runTransaction(transaction => {
+            return transaction.get(docRef).then(snapshot => {
+                const largerArray: any[] = snapshot.get('participants');
+                transaction.update(docRef, 'participants', largerArray.filter(x => x !== uid));
+            });
+        });
+    }
 }
