@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Config } from '../config';
-
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { ComponentsModule } from '../pages/components/components.module';
 import { GoogleMapsModule } from '../pages/google-maps/google-maps.module';
 import { HomeModule } from '../pages/home/home.module';
@@ -20,6 +20,7 @@ import { firebaseConfig } from '../config';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth.service';
 import { SignupPage } from '../pages/signup/signup';
+import { DatabaseService } from '../services/database.service';
 
 @NgModule({
 	declarations: [
@@ -34,7 +35,7 @@ import { SignupPage } from '../pages/signup/signup';
 		AgmCoreModule.forRoot(),
 
 		AngularFireModule.initializeApp(firebaseConfig.fire),
-
+		AngularFirestoreModule,
 		ComponentsModule,
 		NgxErrorsModule,
 		GoogleMapsModule,
@@ -54,7 +55,8 @@ import { SignupPage } from '../pages/signup/signup';
 		StatusBar,
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
 		AngularFireAuth,
-		AuthService
+		AuthService,
+		DatabaseService
 	]
 })
 export class AppModule {
