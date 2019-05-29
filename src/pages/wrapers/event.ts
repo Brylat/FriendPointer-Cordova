@@ -1,6 +1,6 @@
 import { firestore } from "firebase/app";
 
-export default class Event {
+export default class CustomEvent {
     name: string;
     ownerUid: string;
     description: string;

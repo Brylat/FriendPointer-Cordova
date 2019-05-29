@@ -72,13 +72,13 @@ export class DatabaseService {
         return snapshot.docs.map(doc => doc.data() as User);
     }
 
-    public async getAllEvents(): Promise<Event[]> {
+    public async getAllEvents(): Promise<CustomEvent[]> {
         //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
-        return snapshot.docs.map(doc => doc.data() as Event);
+        return snapshot.docs.map(doc => doc.data() as CustomEvent);
     }
 
-    public async createOrUpdateEvent(event: Event) {
+    public async createOrUpdateEvent(event: CustomEvent) {
         await firebase.firestore().collection('events')
             .doc(this.authService.getUID())
             .set(event, { merge: true });
