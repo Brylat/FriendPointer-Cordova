@@ -20,6 +20,7 @@ import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth.service';
 import { SignupPage } from '../pages/signup/signup';
 import { DatabaseService } from '../services/database.service';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @NgModule({
 	declarations: [
@@ -54,7 +55,8 @@ import { DatabaseService } from '../services/database.service';
 		{provide: ErrorHandler, useClass: IonicErrorHandler},
 		AngularFireAuth,
 		AuthService,
-		DatabaseService
+		DatabaseService,
+		Geolocation
 	]
 })
 export class AppModule {

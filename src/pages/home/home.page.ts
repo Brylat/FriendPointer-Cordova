@@ -12,6 +12,7 @@ import { MapsService } from '../../services/maps.service';
 import { InAppBrowserService } from '../../services/in-app-browser.service';
 import { data } from './home-data';
 import { DatabaseService } from '../../services/database.service';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Component({
 	templateUrl: 'home.html',
@@ -32,7 +33,8 @@ export class HomePage {
 		mapsService: MapsService,
 		browserService: InAppBrowserService,
 		nav: Nav,
-		private db: DatabaseService
+		private db: DatabaseService,
+		private geolocation: Geolocation
 	) {
 		this.emailService = emailService;
 		this.callService = callService;
@@ -59,8 +61,12 @@ export class HomePage {
 	}
 
 	public async callUs() {
-		alert(JSON.stringify(await this.db.getAllUsers()))
-		//this.callService.call(data.phoneNumber);
+		this.geolocation.getCurrentPosition().then((resp) => {
+			alert(resp.coords.latitude);
+			// resp.coords.longitude
+		   }).catch((error) => {
+			 console.log('Error getting location', error);
+		   });
 	}
 
 	private initTiles(): void {

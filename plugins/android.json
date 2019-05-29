@@ -23,6 +23,9 @@
     "cordova-plugin-device": {
       "PACKAGE_NAME": "com.friendpointer.bai"
     },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.friendpointer.bai"
+    },
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "com.friendpointer.bai"
     },
