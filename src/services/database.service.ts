@@ -79,9 +79,9 @@ export class DatabaseService {
         return snapshot.docs.map(doc => doc.data() as CustomEventWraper);
     }
 
-    public async createOrUpdateEvent(event: CustomEvent) {
+    public async createOrUpdateEvent(event: CustomEventWraper) {
         await firebase.firestore().collection('events')
-            .doc(this.authService.getUID())
+            .doc(event.uid)
             .set(event, { merge: true });
     }
 
