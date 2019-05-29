@@ -84,7 +84,6 @@ export class DatabaseService {
             .set(event, { merge: true });
     }
 
-
     public async addParticipant(eventId: string, uid: string) {
         var docRef = await firebase.firestore().collection('events')
             .doc(eventId);
