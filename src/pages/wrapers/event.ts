@@ -1,5 +1,4 @@
 import { firestore } from "firebase/app";
-import { Timestamp } from "rxjs";
 
 export default class Event {
     name: string;
