@@ -53,12 +53,15 @@ export class MyApp {
 					user => {
 						if (user) {
 							this.rootPage = HomePage;
+							this.menu.enable(true);
 						} else {
 							this.rootPage = LoginPage;
+							this.menu.enable(false);
 						}
 					},
 					() => {
 						this.rootPage = LoginPage;
+						this.menu.enable(false);
 					}
 				);
 	}
