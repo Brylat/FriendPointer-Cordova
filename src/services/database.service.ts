@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
+import CustomEventWraper from '../pages/wrapers/event';
 
 @Injectable()
 export class DatabaseService {
@@ -72,10 +73,10 @@ export class DatabaseService {
         return snapshot.docs.map(doc => doc.data() as User);
     }
 
-    public async getAllEvents(): Promise<CustomEvent[]> {
+    public async getAllEvents(): Promise<CustomEventWraper[]> {
         //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
-        return snapshot.docs.map(doc => doc.data() as CustomEvent);
+        return snapshot.docs.map(doc => doc.data() as CustomEventWraper);
     }
 
     public async createOrUpdateEvent(event: CustomEvent) {
