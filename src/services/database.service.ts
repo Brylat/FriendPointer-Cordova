@@ -32,7 +32,10 @@ export class DatabaseService {
             .doc(this.authService.getUID());
             firebase.firestore().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
-                const largerArray = snapshot.get('friends');
+                var largerArray: any[] = snapshot.get('friends');
+                if(largerArray == null){
+                    largerArray = new Array<String>();
+                }
                 largerArray.push(uid);
                 transaction.update(docRef, 'friends', largerArray);
             });
@@ -56,16 +59,16 @@ export class DatabaseService {
         let friendsIds = snapshot.data().friends;
         if(!friendsIds) friendsIds = [];
         const usersRef = firebase.firestore().collection('users');
-        let users = {};
+        let users: User[];
         try {
             users = (await Promise.all(friendsIds.map(id => usersRef.doc(id).get())))
             .map((doc: any) => (doc.data()));
 
         } catch (error) {
             console.log(`received an error in getUsers method in module \`db/users\`:`, error);
-            return {};
+            return users;
         }
-        return users;
+        return users as User[];
     }
 
     public async getAllUsers(): Promise<User[]> {

@@ -16,7 +16,7 @@ export class GoogleMapsPage {
 	public zoom: number;
 	public events: CustomEventWrapper[];
 	public users: User[];
-	public friends;
+	public friends: User[];
 	public globalPosition;
 
 	constructor(private geolocation: Geolocation, private alertCtrl: AlertController, private databaseService: DatabaseService) {
@@ -27,7 +27,7 @@ export class GoogleMapsPage {
 		this.Init();
 	}
 
-	private async Init() {
+	private async Init() {		
 		this.initData();
 		var position = await this.geolocation.getCurrentPosition();
 		this.origin = {
@@ -36,7 +36,10 @@ export class GoogleMapsPage {
 		};
 		this.zoom = 10;
 
+		this.friends = await this.databaseService.getAllFriendsData();
 		this.users = await this.databaseService.getAllUsers();
+		await this.removeFriendsFromUsers();
+
 	}
 
 	placeMarker($event) {
@@ -85,6 +88,32 @@ export class GoogleMapsPage {
 					handler: data => {
 						console.log(user.uid);
 						this.databaseService.addFriend(user.uid);
+						this.Init();
+					}
+				}
+			]
+		})
+		alert.present();
+	}
+
+	public clickedFriend(user: User) {
+		let alert = this.alertCtrl.create({
+			title: user.name + " " + user.surname,
+			subTitle: "Status: " + user.status,
+			message: user.description,
+			buttons: [
+				{
+					text: 'Anuluj',
+					role: 'cancel',
+					handler: data => {
+					}
+				},
+				{
+					text: 'Usuń ze znajomych',
+					handler: data => {
+						console.log(user.uid);
+						this.databaseService.deleteFriend(user.uid);
+						this.Init();
 					}
 				}
 			]
@@ -92,6 +121,7 @@ export class GoogleMapsPage {
 		alert.present();
 	}
 	
+
 	private async initData(): Promise<void> {
 		this.events = await this.databaseService.getAllEvents();
 	}
@@ -148,5 +178,16 @@ export class GoogleMapsPage {
 			longitude: event.coords.lng
 		}
 		return customEvent;
+	}
+
+	private async removeFriendsFromUsers(){
+		await this.friends.forEach(friend => {
+			console.log(friend)
+			this.users.map(user => {
+				if(user.uid == friend.uid){
+					this.users.splice(this.users.indexOf(user), 1);
+				}
+			})
+		});
 	}
 }

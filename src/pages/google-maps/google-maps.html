@@ -43,5 +43,20 @@
 				}"		
 		>
 		</agm-marker>
+		<agm-marker
+				*ngFor="let f of friends"
+				(markerClick)="clickedFriend(f)"
+				[latitude]="f.localization.latitude"
+				[longitude]="f.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/friend.png',
+				scaledSize: {
+					width: 40,
+					height: 40
+				}
+				}"		
+		>
+		</agm-marker> 
 	</agm-map>
 </ion-content>
