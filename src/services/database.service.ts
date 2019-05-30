@@ -15,9 +15,10 @@ export class DatabaseService {
     }
 
     public async createOrUpdateUser(user: User) {
+        user.uid = this.authService.getUID();
         await firebase.firestore().collection('users')
             .doc(this.authService.getUID())
-            .set(user, { merge: true });
+            .set(JSON.parse(JSON.stringify(user)), { merge: true });
     }
 
     public async updateCurrentUserLocation(newLocalizatation: firebase.firestore.GeoPoint) {
@@ -58,8 +59,7 @@ export class DatabaseService {
         let users = {};
         try {
             users = (await Promise.all(friendsIds.map(id => usersRef.doc(id).get())))
-                .map((doc: any) => ({ [doc.id]: doc.data() }))
-                .reduce((acc, val) => ({ ...acc, ...val }), {});
+            .map((doc: any) => (doc.data()));
 
         } catch (error) {
             console.log(`received an error in getUsers method in module \`db/users\`:`, error);

@@ -1,6 +1,7 @@
 import { firestore } from "firebase/app";
 
 export default class User {
+    public uid: string;
     public name: string;
     public surname: string;
     public status: Status;

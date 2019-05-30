@@ -28,5 +28,20 @@
 			    }"
 				>
 		</agm-marker>
+		<agm-marker
+				*ngFor="let u of users"
+				(markerClick)="clickedUser(u)"
+				[latitude]="u.localization.latitude"
+				[longitude]="u.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/user.png',
+				scaledSize: {
+					width: 40,
+					height: 40
+				}
+				}"		
+		>
+		</agm-marker>
 	</agm-map>
 </ion-content>

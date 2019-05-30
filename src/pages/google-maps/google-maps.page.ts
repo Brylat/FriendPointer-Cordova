@@ -6,6 +6,7 @@ import { DatabaseService } from '../../services/database.service';
 import { UUID } from 'angular2-uuid';
 
 import CustomEventWrapper from '../wrapers/event';
+import User, { Status } from '../wrapers/user';
 
 @Component({
 	templateUrl: 'google-maps.html'
@@ -14,6 +15,8 @@ export class GoogleMapsPage {
 	public origin: IPoint;
 	public zoom: number;
 	public events: CustomEventWrapper[];
+	public users: User[];
+	public friends;
 	public globalPosition;
 
 	constructor(private geolocation: Geolocation, private alertCtrl: AlertController, private databaseService: DatabaseService) {
@@ -32,6 +35,8 @@ export class GoogleMapsPage {
 			lng: position.coords.longitude
 		};
 		this.zoom = 10;
+
+		this.users = await this.databaseService.getAllUsers();
 	}
 
 	placeMarker($event) {
@@ -63,11 +68,33 @@ export class GoogleMapsPage {
 		alert.present();
 	}
 
+	public clickedUser(user: User) {
+		let alert = this.alertCtrl.create({
+			title: user.name + " " + user.surname,
+			subTitle: "Status: " + user.status,
+			message: user.description,
+			buttons: [
+				{
+					text: 'Anuluj',
+					role: 'cancel',
+					handler: data => {
+					}
+				},
+				{
+					text: 'Dodaj do znajomych',
+					handler: data => {
+						console.log(user.uid);
+						this.databaseService.addFriend(user.uid);
+					}
+				}
+			]
+		})
+		alert.present();
+	}
+	
 	private async initData(): Promise<void> {
 		this.events = await this.databaseService.getAllEvents();
 	}
-
-
 
 	presentPrompt(event: any) {
 		let alert = this.alertCtrl.create({
