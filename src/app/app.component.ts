@@ -89,6 +89,7 @@ export class MyApp {
 		};
 		if (!await this.db.getCurrentUserData()) {
 			await this.db.createOrUpdateUser({
+				uid: this.auth.getUID(),
 				name: "",
 				surname: "",
 				status: 1,
