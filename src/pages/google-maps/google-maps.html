@@ -37,8 +37,8 @@
 				{
 				url: './assets/mapIcon/user.png',
 				scaledSize: {
-					width: 40,
-					height: 40
+					width: 32,
+					height: 37
 				}
 				}"		
 		>
@@ -52,11 +52,26 @@
 				{
 				url: './assets/mapIcon/friend.png',
 				scaledSize: {
-					width: 40,
-					height: 40
+					width: 32,
+					height: 37
 				}
 				}"		
 		>
 		</agm-marker> 
+		<agm-marker
+				*ngFor="let c of currentUser"
+				(markerClick)="clickedFriend(c)"
+				[latitude]="c.localization.latitude"
+				[longitude]="c.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/currentUser.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker>
 	</agm-map>
 </ion-content>

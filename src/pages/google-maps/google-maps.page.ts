@@ -17,6 +17,7 @@ export class GoogleMapsPage {
 	public events: CustomEventWrapper[];
 	public users: User[];
 	public friends: User[];
+	public currentUser: User[] = new Array<User>();
 	public globalPosition;
 
 	constructor(private geolocation: Geolocation, private alertCtrl: AlertController, private databaseService: DatabaseService) {
@@ -37,9 +38,10 @@ export class GoogleMapsPage {
 		this.zoom = 10;
 
 		this.friends = await this.databaseService.getAllFriendsData();
+		this.currentUser.push(await this.databaseService.getCurrentUserData())
 		this.users = await this.databaseService.getAllUsers();
-		await this.removeFriendsFromUsers();
-
+		console.log(this);
+		await this.processMapData();
 	}
 
 	placeMarker($event) {
@@ -88,7 +90,12 @@ export class GoogleMapsPage {
 					handler: data => {
 						console.log(user.uid);
 						this.databaseService.addFriend(user.uid);
-						this.Init();
+						this.users.map(userObject => {
+							if(userObject.uid == user.uid){
+								this.users.splice(this.users.indexOf(userObject), 1);
+							}
+						})
+						this.friends.push(user);
 					}
 				}
 			]
@@ -113,7 +120,12 @@ export class GoogleMapsPage {
 					handler: data => {
 						console.log(user.uid);
 						this.databaseService.deleteFriend(user.uid);
-						this.Init();
+						this.friends.map(friend => {
+							if(friend.uid == user.uid){
+								this.friends.splice(this.friends.indexOf(friend), 1);
+							}
+						})
+						this.users.push(user);
 					}
 				}
 			]
@@ -121,7 +133,6 @@ export class GoogleMapsPage {
 		alert.present();
 	}
 	
-
 	private async initData(): Promise<void> {
 		this.events = await this.databaseService.getAllEvents();
 	}
@@ -180,6 +191,11 @@ export class GoogleMapsPage {
 		return customEvent;
 	}
 
+	private async processMapData(){
+		await this.removeFriendsFromUsers();
+		await this.removeCurrentUserFromUsers();
+	}
+
 	private async removeFriendsFromUsers(){
 		await this.friends.forEach(friend => {
 			console.log(friend)
@@ -189,5 +205,13 @@ export class GoogleMapsPage {
 				}
 			})
 		});
+	}
+
+	private async removeCurrentUserFromUsers(){
+		this.users.map(user => {
+			if(user.uid == this.currentUser[0].uid){
+				this.users.splice(this.users.indexOf(user), 1);
+			}
+		})
 	}
 }
