@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DatabaseService } from '../../services/database.service';
+import User from '../wrapers/user';
 
 @Component({
 	templateUrl: 'settings-screen.html'
@@ -12,6 +13,7 @@ export class SettingsScreenPage {
 		this.getData();
 	}
 	
+	private currentUser: User;
 	public name: string = "";
 	public surname: string = "";
 	public destription: string = "";
@@ -19,34 +21,28 @@ export class SettingsScreenPage {
 
 	private async getData()
 	{
-		let user = await this.databaseService.getCurrentUserData();
-		this.name = user.name;
-		this.surname = user.surname;
-		this.destription = user.description;
-		this.changeStatusText(user.status);
-		console.log(user);
+		this.currentUser = await this.databaseService.getCurrentUserData();
+		if(!this.currentUser) this.currentUser = new User();
+		this.name = this.currentUser.name;
+		this.surname = this.currentUser.surname;
+		this.destription = this.currentUser.description;
+		this.changeStatusText(this.currentUser.status ? this.currentUser.status : 1);
 	}
 	private async updateDestription()
 	{
-		let user = await this.databaseService.getCurrentUserData();
-		user.description = this.destription;
-		//console.log(user);
-		await this.databaseService.createOrUpdateUser(user);
+		this.currentUser.description = this.destription;
+		await this.databaseService.createOrUpdateUser(this.currentUser);
 	}
 	private async updateNameSurname()
 	{
-		let user = await this.databaseService.getCurrentUserData();
-		user.name = this.name;
-		user.surname = this.surname;
-		//console.log(user);
-		await this.databaseService.createOrUpdateUser(user);
+		this.currentUser.name = this.name;
+		this.currentUser.surname = this.surname;
+		await this.databaseService.createOrUpdateUser(this.currentUser);
 	}
 	private async updateStatus(status)
 	{
-		let user = await this.databaseService.getCurrentUserData();
-		//console.log(status);
-		user.status = status;
-		await this.databaseService.createOrUpdateUser(user);
+		this.currentUser.status = status;
+		await this.databaseService.createOrUpdateUser(this.currentUser);
 		this.changeStatusText(status);
 	}
 	private changeStatusText(status)
