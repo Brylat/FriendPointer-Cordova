@@ -17,6 +17,7 @@ export class GoogleMapsPage {
 	public events: CustomEventWrapper[];
 	public ownEvents: CustomEventWrapper[] = new Array<CustomEventWrapper>();
 	public joinedEvents: CustomEventWrapper[] = new Array<CustomEventWrapper>();
+
 	public users: User[];
 	public friends: User[];
 	public currentUser: User[] = new Array<User>();
@@ -42,7 +43,6 @@ export class GoogleMapsPage {
 		};
 		this.zoom = 10;
 		this.loading.dismiss();
-		console.log(this)
 	}
 
 	private async initData(): Promise<void> {
@@ -53,6 +53,7 @@ export class GoogleMapsPage {
 	private async acquireData(){
 		this.events = await this.databaseService.getAllEvents();
 		this.friends = await this.getFriends();
+
 		this.currentUser = new Array<User>();
 		this.currentUser.push(await this.databaseService.getCurrentUserData())
 		this.users = await this.getUsers();
@@ -89,7 +90,6 @@ export class GoogleMapsPage {
 				{
 					text: 'Dołącz',
 					handler: data => {
-						console.log("limit: " + event.limit + " participantz size: " + event.participants.size)
 						if(event.limit>event.participants.size || event.participants.size==undefined){
 							this.databaseService.addParticipant(event.uid, this.currentUser[0].uid);
 							this.events.map(eventTmp => {
@@ -226,7 +226,6 @@ export class GoogleMapsPage {
 		})
 		alert.present();
 	}
-	
 
 	addEvent(event: any) {
 		let alert = this.alertCtrl.create({
