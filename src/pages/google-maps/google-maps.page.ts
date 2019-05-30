@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
 import { IMarker, IPoint } from './interfaces';
-import { AlertController } from 'ionic-angular';
+import { AlertController, LoadingController } from 'ionic-angular';
 import { DatabaseService } from '../../services/database.service';
 import { UUID } from 'angular2-uuid';
 
@@ -19,16 +19,20 @@ export class GoogleMapsPage {
 	public friends: User[];
 	public currentUser: User[] = new Array<User>();
 	public globalPosition;
+	public loading;
 
-	constructor(private geolocation: Geolocation, private alertCtrl: AlertController, private databaseService: DatabaseService) {
+	constructor(private geolocation: Geolocation, private alertCtrl: AlertController, private databaseService: DatabaseService, private loadingCtrl: LoadingController) {
 		this.origin = {
 			lat: 0,
 			lng: 0
 		};
+		this.loading = this.createLoadingScreen();
 		this.Init();
 	}
 
-	private async Init() {		
+	private async Init() {	
+		this.loading.present();
+
 		this.initData();
 		var position = await this.geolocation.getCurrentPosition();
 		this.origin = {
@@ -42,6 +46,8 @@ export class GoogleMapsPage {
 		this.users = await this.databaseService.getAllUsers();
 		console.log(this);
 		await this.processMapData();
+
+		this.loading.dismiss();
 	}
 
 	placeMarker($event) {
@@ -213,5 +219,11 @@ export class GoogleMapsPage {
 				this.users.splice(this.users.indexOf(user), 1);
 			}
 		})
+	}
+
+	private createLoadingScreen(){
+		return this.loadingCtrl.create({
+            content: 'Trwa ładowanie mapy...'
+		});
 	}
 }
