@@ -5,6 +5,7 @@ import { App, MenuController, Nav, Platform } from 'ionic-angular';
 import { ComponentsListPage } from '../pages/components/list/components.list.page';
 import { GoogleMapsPage } from '../pages/google-maps/google-maps.page';
 import { HomePage } from '../pages/home/home.page';
+import { SettingsScreenPage } from '../pages/settings-screen/settings-screen.page';
 import { SlideBoxPage } from '../pages/slide-box/slide-box.page';
 import { WordpressListPage } from '../pages/wordpress/list/wordpress.list.page';
 
@@ -38,6 +39,7 @@ export class MyApp {
 			{ title: 'Home', component: HomePage, icon: 'home' },
 			{ title: 'Wordpress', component: WordpressListPage, icon: 'logo-wordpress' },
 			{ title: 'Slides', component: SlideBoxPage, icon: 'swap' },
+			{ title: 'Settings ', component: SettingsScreenPage, icon: 'swap' },
 			{ title: 'Google maps', component: GoogleMapsPage, icon: 'map' },
 			{ title: 'Components', component: ComponentsListPage, icon: 'grid' },
 		];
