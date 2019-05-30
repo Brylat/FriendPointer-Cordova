@@ -15,18 +15,33 @@
 			(mapClick)="placeMarker($event)">
 		<agm-marker
 				*ngFor="let e of events"
-				(markerClick)="clickedMarker(e)"
+				(markerClick)="clickedEvent(e)"
 				[latitude]="e.localization.latitude"
 				[longitude]="e.localization.longitude"
 				[iconUrl]="
 				{
 				  url: './assets/mapIcon/event.png',
 				  scaledSize: {
-					  width: 40,
-					  height: 40
+					  width: 32,
+					  height: 37
 				  }
 			    }"
 				>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let e of ownEvents"
+				(markerClick)="clickedOwnEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/eventOwn.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"
+		>
 		</agm-marker>
 		<agm-marker
 				*ngFor="let u of users"

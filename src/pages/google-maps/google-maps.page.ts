@@ -15,6 +15,7 @@ export class GoogleMapsPage {
 	public origin: IPoint;
 	public zoom: number;
 	public events: CustomEventWrapper[];
+	public ownEvents: CustomEventWrapper[] = new Array<CustomEventWrapper>();
 	public users: User[];
 	public friends: User[];
 	public currentUser: User[] = new Array<User>();
@@ -32,35 +33,39 @@ export class GoogleMapsPage {
 
 	private async Init() {	
 		this.loading.present();
-
-		this.initData();
+		await this.initData();
 		var position = await this.geolocation.getCurrentPosition();
 		this.origin = {
 			lat: position.coords.latitude,
 			lng: position.coords.longitude
 		};
 		this.zoom = 10;
+		this.loading.dismiss();
+	}
 
+	private async initData(): Promise<void> {
+		await this.acquireData();
+		await this.processMapData();
+	}
+
+	private async acquireData(){
+		this.events = await this.databaseService.getAllEvents();
 		this.friends = await this.databaseService.getAllFriendsData();
 		this.currentUser.push(await this.databaseService.getCurrentUserData())
 		this.users = await this.databaseService.getAllUsers();
-		console.log(this);
-		await this.processMapData();
-
-		this.loading.dismiss();
 	}
 
 	placeMarker($event) {
 		console.log($event.coords.lat);
 		console.log($event.coords.lng);
-		this.presentPrompt($event);
+		this.addEvent($event);
 	}
 
-	public clickedMarker(label: CustomEventWrapper) {
+	public clickedEvent(event: CustomEventWrapper) {
 		let alert = this.alertCtrl.create({
-			title: label.name,
-			subTitle: "limit: " + label.limit,
-			message: label.description,
+			title: event.name,
+			subTitle: "limit: " + event.limit,
+			message: event.description,
 			buttons: [
 				{
 					text: 'Anuluj',
@@ -70,6 +75,37 @@ export class GoogleMapsPage {
 				},
 				{
 					text: 'Dołącz',
+					handler: data => {
+						if(event.limit>0){
+							this.databaseService.addParticipant(event.uid, this.currentUser[0].uid);
+						} else {
+							this.alertCtrl.create({
+								title: 'Brak miejsc',
+								message: 'Brak dostępnych miejsc w wyznaczonym wydarzeniu',
+								buttons: ['Ok']
+							}).present()
+						}
+					}
+				}
+			]
+		})
+		alert.present();
+	}
+
+	public clickedOwnEvent(event: CustomEventWrapper) {
+		let alert = this.alertCtrl.create({
+			title: event.name,
+			subTitle: "limit: " + event.limit,
+			message: event.description,
+			buttons: [
+				{
+					text: 'Anuluj',
+					role: 'cancel',
+					handler: data => {
+					}
+				},
+				{
+					text: 'Usuń',
 					handler: data => {
 
 					}
@@ -138,12 +174,8 @@ export class GoogleMapsPage {
 		})
 		alert.present();
 	}
-	
-	private async initData(): Promise<void> {
-		this.events = await this.databaseService.getAllEvents();
-	}
 
-	presentPrompt(event: any) {
+	addEvent(event: any) {
 		let alert = this.alertCtrl.create({
 			title: 'Dodaj wydarzenie',
 			inputs: [
@@ -167,7 +199,6 @@ export class GoogleMapsPage {
 					text: 'Anuluj',
 					role: 'cancel',
 					handler: data => {
-
 					}
 				},
 				{
@@ -200,11 +231,11 @@ export class GoogleMapsPage {
 	private async processMapData(){
 		await this.removeFriendsFromUsers();
 		await this.removeCurrentUserFromUsers();
+		await this.removeOwnEventsFromEvents();
 	}
 
 	private async removeFriendsFromUsers(){
 		await this.friends.forEach(friend => {
-			console.log(friend)
 			this.users.map(user => {
 				if(user.uid == friend.uid){
 					this.users.splice(this.users.indexOf(user), 1);
@@ -218,6 +249,23 @@ export class GoogleMapsPage {
 			if(user.uid == this.currentUser[0].uid){
 				this.users.splice(this.users.indexOf(user), 1);
 			}
+		})
+	}
+
+	private async removeOwnEventsFromEvents(){
+		this.ownEvents = this.isEventOwn();
+		this.events = this.isEventNotOwn();
+	}
+
+	private isEventOwn(){
+		return this.events.filter(event => {
+			return (event.ownerUid == this.currentUser[0].uid)
+		})
+	}
+
+	private isEventNotOwn(){
+		return this.events.filter(event => {
+			return (event.ownerUid != this.currentUser[0].uid)
 		})
 	}
 
