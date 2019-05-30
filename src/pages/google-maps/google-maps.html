@@ -44,6 +44,21 @@
 		>
 		</agm-marker>
 		<agm-marker
+				*ngFor="let e of joinedEvents"
+				(markerClick)="clickedJoinedEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/eventJoined.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"
+		>
+		</agm-marker>
+		<agm-marker
 				*ngFor="let u of users"
 				(markerClick)="clickedUser(u)"
 				[latitude]="u.localization.latitude"
