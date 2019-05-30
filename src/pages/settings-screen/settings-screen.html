@@ -1,0 +1,71 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Settings screen</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<ion-card>
+
+		<ion-card-content>
+			<h2 class="card-title">
+					<ion-icon name='person' item-left style="color: #d03e84"></ion-icon>  Profil & Ustawienia
+			</h2>
+			<p>
+				Zmień ustawienia swojego konta bądź status.
+			</p>
+			<ion-list>
+
+					<ion-item>
+						<ion-label stacked>Imie</ion-label>
+						<ion-input type="text" [(ngModel)]="name"></ion-input>
+					</ion-item>
+			
+					<ion-item>
+						<ion-label stacked>Nazwisko</ion-label>
+						<ion-input type="text" [(ngModel)]="surname"></ion-input>
+					</ion-item>
+			</ion-list>
+			<div padding>
+				<button ion-button color="primary" block (click)="updateNameSurname()">Zmień dane personalne</button>
+			</div>
+
+			<ion-list>
+
+					<ion-item>
+						<ion-label stacked>Opis</ion-label>
+						<ion-input type="text" [(ngModel)]="destription"></ion-input>
+					</ion-item>
+			
+			</ion-list>
+			<div padding>
+				<button ion-button color="primary" block (click)="updateDestription()">Zaktualizuj opis</button>
+			</div>
+			<ion-fab left bottom>
+					<button ion-fab color="light" style="width: 120px;">
+						Zmień status
+						<ion-icon name="arrow-dropright"></ion-icon>
+					</button>
+					<ion-fab-list side="right">
+						<button ion-fab (click)="updateStatus(1)" style="background-color: green">
+							<ion-icon name="happy"></ion-icon>
+						</button>
+						<button ion-fab (click)="updateStatus(2)" style="background-color: yellow">
+							<ion-icon name="people"></ion-icon>
+						</button>
+						<button ion-fab (click)="updateStatus(3)" style="background-color: red">
+							<ion-icon name="key"></ion-icon>
+						</button>
+					</ion-fab-list>
+				</ion-fab>
+		</ion-card-content>	
+	</ion-card>
+	<ion-card>
+		<ion-card-content>
+			{{ statusText }}
+		</ion-card-content>
+	</ion-card>
+</ion-content>

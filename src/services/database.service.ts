@@ -11,7 +11,7 @@ export class DatabaseService {
     public async getCurrentUserData(): Promise<User> {
         const snapshot = await firebase.firestore().collection('users')
             .doc(this.authService.getUID()).get();
-        return snapshot.data() as User;
+            return snapshot.exists ? snapshot.data() as User : null;
     }
 
     public async createOrUpdateUser(user: User) {
