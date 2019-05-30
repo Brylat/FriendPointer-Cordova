@@ -8,5 +8,5 @@ export default class CustomEventWraper {
     limit: number;
     localization: firestore.GeoPoint;
     createDate: Date; 
-    participants: string[];
+    participants: Set<String>;
 }
