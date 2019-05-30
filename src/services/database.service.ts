@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
-import CustomEventWraper from '../pages/wrapers/event';
+import CustomEventWrapper from '../pages/wrapers/event';
 
 @Injectable()
 export class DatabaseService {
@@ -15,6 +15,7 @@ export class DatabaseService {
     }
 
     public async createOrUpdateUser(user: User) {
+        user.uid = this.authService.getUID();
         await firebase.firestore().collection('users')
             .doc(this.authService.getUID())
             .set(JSON.parse(JSON.stringify(user)), { merge: true });
@@ -31,7 +32,10 @@ export class DatabaseService {
             .doc(this.authService.getUID());
             firebase.firestore().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
-                const largerArray = snapshot.get('friends');
+                var largerArray: any[] = snapshot.get('friends');
+                if(largerArray == null){
+                    largerArray = new Array<String>();
+                }
                 largerArray.push(uid);
                 transaction.update(docRef, 'friends', largerArray);
             });
@@ -55,17 +59,16 @@ export class DatabaseService {
         let friendsIds = snapshot.data().friends;
         if(!friendsIds) friendsIds = [];
         const usersRef = firebase.firestore().collection('users');
-        let users = {};
+        let users: User[];
         try {
             users = (await Promise.all(friendsIds.map(id => usersRef.doc(id).get())))
-                .map((doc: any) => ({ [doc.id]: doc.data() }))
-                .reduce((acc, val) => ({ ...acc, ...val }), {});
+            .map((doc: any) => (doc.data()));
 
         } catch (error) {
             console.log(`received an error in getUsers method in module \`db/users\`:`, error);
-            return {};
+            return users;
         }
-        return users;
+        return users as User[];
     }
 
     public async getAllUsers(): Promise<User[]> {
@@ -73,16 +76,17 @@ export class DatabaseService {
         return snapshot.docs.map(doc => doc.data() as User);
     }
 
-    public async getAllEvents(): Promise<CustomEventWraper[]> {
+    public async getAllEvents(): Promise<CustomEventWrapper[]> {
         //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
-        return snapshot.docs.map(doc => doc.data() as CustomEventWraper);
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
     }
 
-    public async createOrUpdateEvent(event: CustomEventWraper) {
+    public async createOrUpdateEvent(event: CustomEventWrapper) {
+        event.ownerUid = this.authService.getUID();
         await firebase.firestore().collection('events')
             .doc(event.uid)
-            .set(event, { merge: true });
+            .set(JSON.parse(JSON.stringify(event)), { merge: true });
     }
 
     public async addParticipant(eventId: string, uid: string) {

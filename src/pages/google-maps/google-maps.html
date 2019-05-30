@@ -15,19 +15,77 @@
 			(mapClick)="placeMarker($event)">
 		<agm-marker
 				*ngFor="let e of events"
-				(markerClick)="clickedMarker(e)"
+				(markerClick)="clickedEvent(e)"
 				[latitude]="e.localization.latitude"
 				[longitude]="e.localization.longitude"
-				[label]="e.name"
 				[iconUrl]="
 				{
 				  url: './assets/mapIcon/event.png',
 				  scaledSize: {
-					  width: 40,
-					  height: 40
+					  width: 32,
+					  height: 37
 				  }
 			    }"
 				>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let e of ownEvents"
+				(markerClick)="clickedOwnEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/eventOwn.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"
+		>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let u of users"
+				(markerClick)="clickedUser(u)"
+				[latitude]="u.localization.latitude"
+				[longitude]="u.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/user.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let f of friends"
+				(markerClick)="clickedFriend(f)"
+				[latitude]="f.localization.latitude"
+				[longitude]="f.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/friend.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker> 
+		<agm-marker
+				*ngFor="let c of currentUser"
+				[latitude]="c.localization.latitude"
+				[longitude]="c.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/currentUser.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
 		</agm-marker>
 	</agm-map>
 </ion-content>
