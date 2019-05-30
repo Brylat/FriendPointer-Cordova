@@ -50,9 +50,19 @@ export class GoogleMapsPage {
 
 	private async acquireData(){
 		this.events = await this.databaseService.getAllEvents();
-		this.friends = await this.databaseService.getAllFriendsData();
+		this.friends = await this.getFriends();
 		this.currentUser.push(await this.databaseService.getCurrentUserData())
-		this.users = await this.databaseService.getAllUsers();
+		this.users = await this.getUsers();
+	}
+
+	private async getUsers(){
+		var tempUsers = await this.databaseService.getAllUsers();
+		return tempUsers.filter(user=> user.localization!=null);
+	}
+
+	private async getFriends(){
+		var tempFriends = await this.databaseService.getAllFriendsData();
+		return tempFriends.filter(user=> user.localization!=null);
 	}
 
 	placeMarker($event) {
@@ -102,12 +112,6 @@ export class GoogleMapsPage {
 					text: 'Anuluj',
 					role: 'cancel',
 					handler: data => {
-					}
-				},
-				{
-					text: 'Usuń',
-					handler: data => {
-
 					}
 				}
 			]
