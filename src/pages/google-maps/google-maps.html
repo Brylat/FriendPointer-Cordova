@@ -75,7 +75,6 @@
 		</agm-marker> 
 		<agm-marker
 				*ngFor="let c of currentUser"
-				(markerClick)="clickedFriend(c)"
 				[latitude]="c.localization.latitude"
 				[longitude]="c.localization.longitude"
 				[iconUrl]="
