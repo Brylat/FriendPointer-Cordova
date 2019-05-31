@@ -219,7 +219,6 @@ export class GoogleMapsPage {
 					text: 'Wypisz się',
 					handler: data => {
 						this.databaseService.deleteParticipant(event.uid, this.currentUser[0].uid);
-						event.participants.delete(this.currentUser[0].uid);
 						this.joinedEvents.map(joinedEvent => {
 							if(joinedEvent.uid == event.uid){
 								this.joinedEvents.splice(this.joinedEvents.indexOf(event), 1);
