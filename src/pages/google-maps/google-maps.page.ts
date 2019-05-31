@@ -7,6 +7,7 @@ import { UUID } from 'angular2-uuid';
 
 import CustomEventWrapper from '../wrapers/event';
 import User, { Status } from '../wrapers/user';
+import { firestore } from 'firebase/app';
 
 @Component({
 	templateUrl: 'google-maps.html'
@@ -51,7 +52,12 @@ export class GoogleMapsPage {
 	}
 
 	private async acquireData(){
-		this.events = await this.databaseService.getAllEvents();
+		this.events = (await this.databaseService.getAllEvents()).map(x => {
+			if(!x.participants){
+			x.participants = new Set<string>();
+		}
+		return x;
+		;});
 		this.friends = await this.getFriends();
 
 		this.currentUser = new Array<User>();
@@ -76,9 +82,10 @@ export class GoogleMapsPage {
 	}
 
 	public clickedEvent(event: CustomEventWrapper) {
+		console.log("particip:", event.participants.size)
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "limit: " + event.limit + " zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
+			subTitle: "Limit: " + event.limit + " Zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
 			message: event.description,
 			buttons: [
 				{
@@ -115,7 +122,7 @@ export class GoogleMapsPage {
 	public clickedOwnEvent(event: CustomEventWrapper) {
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "limit: " + event.limit + " zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
+			subTitle: "Limit: " + event.limit + " Zajęte: " + ((!event.participants || !event.participants.size) ? 0 : event.participants.size),
 			message: event.description,
 			buttons: [
 				{
@@ -127,7 +134,7 @@ export class GoogleMapsPage {
 				{
 					text: 'Usuń',
 					handler: data => {
-						//todo: this.databaseService.deleteEvent(event.uid)
+						this.databaseService.deleteEvent(event.uid)
 						this.ownEvents.map(ownEvent => {
 							if(ownEvent.uid == event.uid){
 								this.ownEvents.splice(this.ownEvents.indexOf(event), 1);
@@ -143,7 +150,6 @@ export class GoogleMapsPage {
 	public clickedUser(user: User) {
 		let alert = this.alertCtrl.create({
 			title: user.name + " " + user.surname,
-			subTitle: "Status: " + user.status,
 			message: user.description,
 			buttons: [
 				{
@@ -172,7 +178,6 @@ export class GoogleMapsPage {
 	public clickedFriend(user: User) {
 		let alert = this.alertCtrl.create({
 			title: user.name + " " + user.surname,
-			subTitle: "Status: " + user.status,
 			message: user.description,
 			buttons: [
 				{
@@ -201,7 +206,7 @@ export class GoogleMapsPage {
 	public clickedJoinedEvent(event: CustomEventWrapper) {
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "limit: " + event.limit,
+			subTitle: "limit: " + event.limit + " Zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
 			message: event.description,
 			buttons: [
 				{
@@ -214,12 +219,12 @@ export class GoogleMapsPage {
 					text: 'Wypisz się',
 					handler: data => {
 						this.databaseService.deleteParticipant(event.uid, this.currentUser[0].uid);
+						event.participants.delete(this.currentUser[0].uid);
 						this.joinedEvents.map(joinedEvent => {
 							if(joinedEvent.uid == event.uid){
 								this.joinedEvents.splice(this.joinedEvents.indexOf(event), 1);
 							}
 						})
-						this.events.push(event);
 					}
 				}
 			]
@@ -257,7 +262,9 @@ export class GoogleMapsPage {
 					text: 'Dodaj',
 					handler: data => {
 						let customEvent = this.generateCustomEventWrapper(event, data);
-						this.databaseService.createOrUpdateEvent(customEvent).then(() => this.ownEvents.push(event));
+						this.databaseService.createOrUpdateEvent(customEvent).then(() => {
+							this.ownEvents.push(customEvent)
+						});
 					}
 				}
 			]
@@ -266,18 +273,18 @@ export class GoogleMapsPage {
 	}
 
 	generateCustomEventWrapper(event, data) {
-		let customEvent = new CustomEventWrapper()
-		customEvent.name = data.nazwa;
-		customEvent.description = data.opis;
-		customEvent.limit = data.limit;
-		customEvent.createDate = new Date();
-		customEvent.uid = UUID.UUID().toString();
-		customEvent.participants = new Set<string>();
-		customEvent.localization = {
-			latitude: event.coords.lat,
-			longitude: event.coords.lng
-		}
-		return customEvent;
+		let newCustomEvent: CustomEventWrapper = {
+			name: data.nazwa,
+			description: data.opis,
+			limit: data.limit,
+			createDate: new Date(),
+			uid: UUID.UUID().toString(),
+			participants: new Set<string>(),
+			localization: new firestore.GeoPoint(event.coords.lat, event.coords.lng),
+			ownerUid: ''
+		};
+
+		return newCustomEvent;
 	}
 
 	private async processMapData(){

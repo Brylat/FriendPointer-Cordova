@@ -87,6 +87,9 @@ export class DatabaseService {
         await firebase.firestore().collection('events')
             .doc(event.uid)
             .set(JSON.parse(JSON.stringify(event)), { merge: true });
+        await firebase.firestore().collection('events')
+            .doc(event.uid)
+            .update({ localization: new firebase.firestore.GeoPoint(event.localization.latitude, event.localization.longitude) });
     }
 
     public async addParticipant(eventId: string, uid: string) {
@@ -94,7 +97,8 @@ export class DatabaseService {
             .doc(eventId);
             firebase.firestore().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
-                const largerArray = snapshot.get('participants');
+                let largerArray = snapshot.get('participants');
+                if(!largerArray) largerArray = [];
                 largerArray.push(uid);
                 transaction.update(docRef, 'participants', largerArray);
             });
@@ -110,5 +114,11 @@ export class DatabaseService {
                 transaction.update(docRef, 'participants', largerArray.filter(x => x !== uid));
             });
         });
+    }
+
+    public async deleteEvent(eventId: string,) {
+        await firebase.firestore().collection('events')
+            .doc(eventId)
+            .delete();
     }
 }
