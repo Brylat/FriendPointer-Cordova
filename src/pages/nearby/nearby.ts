@@ -24,6 +24,7 @@ export class NearbyPage {
       databaseService: DatabaseService,
       private loadingCtrl: LoadingController) {
     this.databaseService = databaseService;
+    this.eventList = Array();
   }
 
   ionViewDidLoad() {
@@ -32,6 +33,25 @@ export class NearbyPage {
       content: "Please wait..."
     });
     loader.present();
-    this.databaseService.getAllEvents().then((res) => {this.eventList = (res); loader.dismissAll()});
+    this.databaseService.getAllEvents().then((res) => {
+      let responseList = (res);
+      for (let response of responseList) {
+        this.eventList.push(
+            {
+              uid: response.uid,
+              name: response.name,
+              ownerUid: response.ownerUid,
+              description: response.description,
+              limit: response.limit,
+              localization: response.localization,
+              createDate: new Date(response.createDate),
+              stopDate: new Date(response.stopDate),
+              participants: response.participants,
+            }
+        );
+      }
+      loader.dismissAll();
+
+    });
   }
 }
