@@ -73,19 +73,19 @@ export class FriendsScreenPage {
     { 
 			case 2: { 
 			   return " Dostępny. :)"; 
-			   break; 
+			   
 			} 
 			case 1: { 
 				return " Dostępny tylko dla znajomych. :/"; 
-			   break;  
+			    
 			} 
 			case 0: { 
 				return " Niedostępny. :("; 
-				break; 
+				
 			 } 
 			default: { 
 				return " Error";  
-			   break; 
+			    
 			} 
 		 } 
 	}
