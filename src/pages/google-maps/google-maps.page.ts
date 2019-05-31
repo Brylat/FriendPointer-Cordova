@@ -60,11 +60,11 @@ export class GoogleMapsPage {
 		}
 		return x;
 		;});
-		this.friends = await this.getFriends();
 
 		this.currentUser = new Array<User>();
 		this.currentUser.push(await this.databaseService.getCurrentUserData())
 		this.users = await this.getUsers();
+		this.friends = await this.getFriends();
 	}
 
 	private async getUsers(){
@@ -73,8 +73,15 @@ export class GoogleMapsPage {
 	}
 
 	private async getFriends(){
-		var tempFriends = await this.databaseService.getAllFriendsData();
-		return tempFriends.filter(user=> user.localization!=null);
+		let friends = new Array<User>();
+		this.users.forEach(user => {
+			this.currentUser[0].friends.forEach(friend => {
+				if (user.uid == friend){
+					friends.push(user);
+				}
+			})
+		});
+		return friends;
 	}
 
 	placeMarker($event) {
@@ -282,7 +289,6 @@ export class GoogleMapsPage {
 	}
 
 	generateCustomEventWrapper(event, data) {
-		console.log("aaa " + data.activeTime)
 		let newCustomEvent: CustomEventWrapper = {
 			name: data.nazwa,
 			description: data.opis,
