@@ -1,0 +1,105 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Mapa</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<agm-map style="width: 100%; height: 100%;"
+			[latitude]="origin.lat"
+			[longitude]="origin.lng"
+			[zoom]="zoom">
+		<agm-marker
+				*ngFor="let e of events"
+				(markerClick)="clickedEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				  url: './assets/mapIcon/event.png',
+				  scaledSize: {
+					  width: 32,
+					  height: 37
+				  }
+			    }"
+				>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let e of ownEvents"
+				(markerClick)="clickedOwnEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/eventOwn.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"
+		>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let e of joinedEvents"
+				(markerClick)="clickedJoinedEvent(e)"
+				[latitude]="e.localization.latitude"
+				[longitude]="e.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/eventJoined.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"
+		>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let u of users"
+				(markerClick)="clickedUser(u)"
+				[latitude]="u.localization.latitude"
+				[longitude]="u.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/user.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker>
+		<agm-marker
+				*ngFor="let f of friends"
+				(markerClick)="clickedFriend(f)"
+				[latitude]="f.localization.latitude"
+				[longitude]="f.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/friend.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker> 
+		<agm-marker
+				*ngFor="let c of currentUser"
+				[latitude]="c.localization.latitude"
+				[longitude]="c.localization.longitude"
+				[iconUrl]="
+				{
+				url: './assets/mapIcon/currentUser.png',
+				scaledSize: {
+					width: 32,
+					height: 37
+				}
+				}"		
+		>
+		</agm-marker>
+	</agm-map>
+</ion-content>
