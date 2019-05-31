@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 /**
- * Generated class for the EventsPage page.
+ * Generated class for the EventsPage tabs.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -11,15 +11,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-events',
-  templateUrl: 'events.html',
+  templateUrl: 'events.html'
 })
 export class EventsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  yourRoot = 'YourPage'
+  nearbyRoot = 'NearbyPage'
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventsPage');
-  }
+
+  constructor(public navCtrl: NavController) {}
 
 }

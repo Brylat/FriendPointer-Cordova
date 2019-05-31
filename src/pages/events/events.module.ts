@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {IonicPageModule} from 'ionic-angular';
+import { IonicPageModule } from 'ionic-angular';
 import { EventsPage } from './events';
 
 @NgModule({
@@ -7,7 +7,7 @@ import { EventsPage } from './events';
     EventsPage,
   ],
   imports: [
-    IonicPageModule.forChild(EventsPage)
-  ],
+    IonicPageModule.forChild(EventsPage),
+  ]
 })
 export class EventsPageModule {}

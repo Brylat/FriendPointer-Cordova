@@ -1,21 +1,13 @@
-<!--
-  Generated template for the EventsPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Events</ion-title>
-  </ion-navbar>
-
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Supermodular 2</ion-title>
+    </ion-navbar>
 </ion-header>
 
-
-<ion-content padding>
-  <p>Hello!</p>
-</ion-content>
+<ion-tabs>
+    <ion-tab [root]="yourRoot" tabTitle="Your" tabIcon="information-circle"></ion-tab>
+    <ion-tab [root]="nearbyRoot" tabTitle="Nearby" tabIcon="information-circle"></ion-tab>
+</ion-tabs>
