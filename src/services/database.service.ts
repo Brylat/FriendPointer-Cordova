@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
 import CustomEventWrapper from '../pages/wrapers/event';
+import { getCurrentDebugContext } from '@angular/core/src/view/services';
 
 @Injectable()
 export class DatabaseService {
@@ -71,9 +72,26 @@ export class DatabaseService {
         return users as User[];
     }
 
+    public async getAllFriendsIds(): Promise<string[]> {
+        const snapshot = await firebase.firestore().collection('users')
+            .doc(this.authService.getUID()).get();
+        return snapshot.data().friends as string[];
+    }
+
     public async getAllUsers(): Promise<User[]> {
-        const snapshot = await firebase.firestore().collection('users').get()
-        return snapshot.docs.map(doc => doc.data() as User);
+        const snapshot = await firebase.firestore().collection('users').where("status", ">", 0).get();
+        return this.filterUserForFriendOnly(snapshot.docs.map(doc => doc.data() as User));
+    }
+
+    private async filterUserForFriendOnly(users: User[]) {
+        if(!users) return [];
+        const friends = await this.getAllFriendsIds();
+        const filterUsers = users.filter(x => {
+            if(x.status > 1 || (x.friends && x.friends.indexOf(this.authService.getUID()) > -1)){
+                return x;
+            }
+        })
+        return filterUsers;
     }
 
     public async getAllEvents(): Promise<CustomEventWrapper[]> {

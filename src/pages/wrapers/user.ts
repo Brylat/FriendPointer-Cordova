@@ -7,6 +7,7 @@ export default class User {
     public status: Status;
     public description: string;
     public localization: firestore.GeoPoint;
+    public friends: string[];
  }
  
  export enum Status {

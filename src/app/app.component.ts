@@ -92,9 +92,10 @@ export class MyApp {
 				uid: this.auth.getUID(),
 				name: "",
 				surname: "",
-				status: 1,
+				status: 2,
 				description: "",
-				localization: new firestore.GeoPoint(0, 0)
+				localization: new firestore.GeoPoint(0, 0),
+				friends: []
 			})
 		}
 		this.positionWatch = this.geolocation.watchPosition(options).filter((p: any) => p.code === undefined).subscribe((position: Geoposition) => {
