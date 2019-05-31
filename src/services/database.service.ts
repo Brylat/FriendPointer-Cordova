@@ -88,9 +88,9 @@ export class DatabaseService {
 
     private async filterUserForFriendOnly(users: User[]) {
         if(!users) return [];
-        const friends = await this.getAllFriendsIds();
+        const myUid = await this.authService.getUID();
         const filterUsers = users.filter(x => {
-            if(x.status > 1 || (x.friends && x.friends.indexOf(this.authService.getUID()) > -1)){
+            if(x.status > 1 || (x.friends && x.friends.length > 0 && x.friends.indexOf(myUid) > -1)){
                 return x;
             }
         })
@@ -100,6 +100,12 @@ export class DatabaseService {
     public async getAllEvents(): Promise<CustomEventWrapper[]> {
         //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+    }
+
+    public async getAllOwnEvents(): Promise<CustomEventWrapper[]> {
+        const myUid = await this.authService.getUID();
+        const snapshot = await firebase.firestore().collection('events').where("ownerUid", "==", myUid).get()
         return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
     }
 

@@ -84,7 +84,8 @@ export class MyApp {
 
 	private async afterLoginAction() {
 		let options = {
-			frequency: 20000,
+			frequency: 30000,
+			maximumAge: 10000,
 			enableHighAccuracy: true
 		};
 		if (!await this.db.getCurrentUserData()) {
