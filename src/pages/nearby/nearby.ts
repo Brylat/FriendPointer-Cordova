@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {DatabaseService} from "../../services/database.service";
 
 /**
@@ -18,12 +18,20 @@ export class NearbyPage {
 
   private databaseService: DatabaseService;
   private eventList: Array<Object>;
-  constructor(public navCtrl: NavController, public navParams: NavParams, databaseService: DatabaseService) {
+  constructor(
+      private navCtrl: NavController,
+      private navParams: NavParams,
+      databaseService: DatabaseService,
+      private loadingCtrl: LoadingController) {
     this.databaseService = databaseService;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NearbyPage');
-    this.databaseService.getAllEvents().then((res) => {this.eventList = (res)});
+    const loader = this.loadingCtrl.create({
+      content: "Please wait..."
+    });
+    loader.present();
+    this.databaseService.getAllEvents().then((res) => {this.eventList = (res); loader.dismissAll()});
   }
 }
