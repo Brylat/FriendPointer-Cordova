@@ -11,6 +11,7 @@ import { WordpressListPage } from '../pages/wordpress/list/wordpress.list.page';
 
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth.service';
+import { EventsPage } from '../pages/events/events';
 
 @Component({
 	templateUrl: 'app.html'
@@ -41,6 +42,7 @@ export class MyApp {
 			{ title: 'Slides', component: SlideBoxPage, icon: 'swap' },
 			{ title: 'Settings ', component: SettingsScreenPage, icon: 'swap' },
 			{ title: 'Google maps', component: GoogleMapsPage, icon: 'map' },
+			{ title: 'Events', component: EventsPage, icon: 'flame' },
 			{ title: 'Components', component: ComponentsListPage, icon: 'grid' },
 		];
 	}

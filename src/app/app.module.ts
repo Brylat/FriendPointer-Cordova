@@ -22,6 +22,7 @@ import { AuthService } from '../services/auth.service';
 import { SignupPage } from '../pages/signup/signup';
 import { DatabaseService } from '../services/database.service';
 import { Geolocation } from '@ionic-native/geolocation';
+import {EventsPageModule} from "../pages/events/events.module";
 
 @NgModule({
 	declarations: [
@@ -43,7 +44,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 		HomeModule,
 		SlideBoxModule,
 		SettingsScreenModule,
-		WordpressModule
+		WordpressModule,
+		EventsPageModule
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
