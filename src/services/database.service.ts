@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
-import CustomEventWraper from '../pages/wrapers/event';
+import CustomEventWrapper from '../pages/wrapers/event';
+import { getCurrentDebugContext } from '@angular/core/src/view/services';
 
 @Injectable()
 export class DatabaseService {
@@ -11,13 +12,17 @@ export class DatabaseService {
     public async getCurrentUserData(): Promise<User> {
         const snapshot = await firebase.firestore().collection('users')
             .doc(this.authService.getUID()).get();
-        return snapshot.data() as User;
+            return snapshot.exists ? snapshot.data() as User : null;
     }
 
     public async createOrUpdateUser(user: User) {
+        user.uid = this.authService.getUID();
         await firebase.firestore().collection('users')
             .doc(this.authService.getUID())
-            .set(user, { merge: true });
+            .set(JSON.parse(JSON.stringify(user)), { merge: true });
+        await firebase.firestore().collection('users')
+            .doc(this.authService.getUID())
+            .update({ localization: new firebase.firestore.GeoPoint(user.localization.latitude, user.localization.longitude) });
     }
 
     public async updateCurrentUserLocation(newLocalizatation: firebase.firestore.GeoPoint) {
@@ -31,7 +36,10 @@ export class DatabaseService {
             .doc(this.authService.getUID());
             firebase.firestore().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
-                const largerArray = snapshot.get('friends');
+                var largerArray: any[] = snapshot.get('friends');
+                if(largerArray == null){
+                    largerArray = new Array<String>();
+                }
                 largerArray.push(uid);
                 transaction.update(docRef, 'friends', largerArray);
             });
@@ -55,34 +63,60 @@ export class DatabaseService {
         let friendsIds = snapshot.data().friends;
         if(!friendsIds) friendsIds = [];
         const usersRef = firebase.firestore().collection('users');
-        let users = {};
+        let users: User[];
         try {
             users = (await Promise.all(friendsIds.map(id => usersRef.doc(id).get())))
-                .map((doc: any) => ({ [doc.id]: doc.data() }))
-                .reduce((acc, val) => ({ ...acc, ...val }), {});
+            .map((doc: any) => (doc.data()));
 
         } catch (error) {
             console.log(`received an error in getUsers method in module \`db/users\`:`, error);
-            return {};
+            return users;
         }
-        return users;
+        return users as User[];
+    }
+
+    public async getAllFriendsIds(): Promise<string[]> {
+        const snapshot = await firebase.firestore().collection('users')
+            .doc(this.authService.getUID()).get();
+        return snapshot.data().friends as string[];
     }
 
     public async getAllUsers(): Promise<User[]> {
-        const snapshot = await firebase.firestore().collection('users').get()
-        return snapshot.docs.map(doc => doc.data() as User);
+        const snapshot = await firebase.firestore().collection('users').where("status", ">", 0).get();
+        return this.filterUserForFriendOnly(snapshot.docs.map(doc => doc.data() as User));
     }
 
-    public async getAllEvents(): Promise<CustomEventWraper[]> {
+    private async filterUserForFriendOnly(users: User[]) {
+        if(!users) return [];
+        const myUid = await this.authService.getUID();
+        const filterUsers = users.filter(x => {
+            if(x.status > 1 || (x.friends && x.friends.length > 0 && x.friends.indexOf(myUid) > -1)){
+                return x;
+            }
+        })
+        return filterUsers;
+    }
+
+    public async getAllEvents(): Promise<CustomEventWrapper[]> {
         //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
-        return snapshot.docs.map(doc => doc.data() as CustomEventWraper);
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
     }
 
-    public async createOrUpdateEvent(event: CustomEventWraper) {
+    public async getAllOwnEvents(): Promise<CustomEventWrapper[]> {
+        const myUid = await this.authService.getUID();
+        const snapshot = await firebase.firestore().collection('events').where("ownerUid", "==", myUid).get()
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+    }
+
+    public async createOrUpdateEvent(event: CustomEventWrapper) {
+        event.ownerUid = this.authService.getUID();
         await firebase.firestore().collection('events')
             .doc(event.uid)
-            .set(event, { merge: true });
+            .set(JSON.parse(JSON.stringify(event)), { merge: true });
+        await firebase.firestore().collection('events')
+            .doc(event.uid)
+            .update({ localization: new firebase.firestore.GeoPoint(event.localization.latitude, event.localization.longitude) });
     }
 
     public async addParticipant(eventId: string, uid: string) {
@@ -90,7 +124,8 @@ export class DatabaseService {
             .doc(eventId);
             firebase.firestore().runTransaction(transaction => {
             return transaction.get(docRef).then(snapshot => {
-                const largerArray = snapshot.get('participants');
+                let largerArray = snapshot.get('participants');
+                if(!largerArray) largerArray = [];
                 largerArray.push(uid);
                 transaction.update(docRef, 'participants', largerArray);
             });
@@ -106,5 +141,11 @@ export class DatabaseService {
                 transaction.update(docRef, 'participants', largerArray.filter(x => x !== uid));
             });
         });
+    }
+
+    public async deleteEvent(eventId: string,) {
+        await firebase.firestore().collection('events')
+            .doc(eventId)
+            .delete();
     }
 }

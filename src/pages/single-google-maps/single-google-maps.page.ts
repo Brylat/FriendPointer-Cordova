@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation';
-import { IMarker, IPoint } from './interfaces';
 import { AlertController, LoadingController } from 'ionic-angular';
-import { DatabaseService } from '../../services/database.service';
 import { UUID } from 'angular2-uuid';
 
 import CustomEventWrapper from '../wrapers/event';
 import User, { Status } from '../wrapers/user';
 import { firestore } from 'firebase/app';
+import { IPoint } from '../google-maps/interfaces';
+import { DatabaseService } from '../../services/database.service';
 
 @Component({
-	templateUrl: 'google-maps.html'
+	templateUrl: 'single-google-maps.html'
 })
-export class GoogleMapsPage {
+export class SingleGoogleMapsPage {
 	public origin: IPoint;
 	public zoom: number;
 	public events: CustomEventWrapper[];
@@ -44,8 +44,6 @@ export class GoogleMapsPage {
 		};
 		this.zoom = 10;
 		this.loading.dismiss();
-
-		console.log(this);
 	}
 
 	private async initData(): Promise<void> {
@@ -54,21 +52,19 @@ export class GoogleMapsPage {
 	}
 
 	private async acquireData(){
-		this.events = (await this.databaseService.getAllEvents()).map(x => {
-			if(!x.participants){
-			x.participants = new Array<string>();
-		}
-		return x;
-		;});
+		//add events 
+		this.events = new Array<CustomEventWrapper>();
 
 		this.currentUser = new Array<User>();
-		this.currentUser.push(await this.databaseService.getCurrentUserData())
+		//add  user
+		this.currentUser.push(new User)
 		this.users = await this.getUsers();
 		this.friends = await this.getFriends();
 	}
 
 	private async getUsers(){
-		var tempUsers = await this.databaseService.getAllUsers();
+		//add users
+		var tempUsers = new Array<User>();
 		return tempUsers.filter(user=> user.localization!=null);
 	}
 
@@ -82,12 +78,6 @@ export class GoogleMapsPage {
 			})
 		});
 		return friends;
-	}
-
-	placeMarker($event) {
-		console.log($event.coords.lat);
-		console.log($event.coords.lng);
-		this.addEvent($event);
 	}
 
 	public clickedEvent(event: CustomEventWrapper) {
@@ -239,52 +229,6 @@ export class GoogleMapsPage {
 				}
 			]
 		})
-		alert.present();
-	}
-
-	addEvent(event: any) {
-		let alert = this.alertCtrl.create({
-			title: 'Dodaj wydarzenie',
-			inputs: [
-				{
-					name: 'nazwa',
-					placeholder: 'Nazwa'
-				},
-				{
-					name: 'opis',
-					placeholder: 'opis'
-				},
-				{
-					name: 'limit',
-					placeholder: 'limit osób',
-					type: 'number',
-					min: 1
-				},
-				{
-					name: 'activeTime',
-					placeholder: 'wygaśnięcie za (godzin)',
-					type: 'number',
-					max: 24
-				}
-			],
-			buttons: [
-				{
-					text: 'Anuluj',
-					role: 'cancel',
-					handler: data => {
-					}
-				},
-				{
-					text: 'Dodaj',
-					handler: data => {
-						let customEvent = this.generateCustomEventWrapper(event, data);
-						this.databaseService.createOrUpdateEvent(customEvent).then(() => {
-							this.ownEvents.push(customEvent)
-						});
-					}
-				}
-			]
-		});
 		alert.present();
 	}
 
