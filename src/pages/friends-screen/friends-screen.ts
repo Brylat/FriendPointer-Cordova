@@ -50,8 +50,9 @@ export class FriendsScreenPage {
         {
 					text: 'Usuń ze znajomych',
 					handler: data => {
-            console.log("usun");
-            console.log(user);
+            this.databaseService.deleteFriend(user.uid);
+            this.friendsList = this.friendsList.filter(x => x.uid !== user.uid)
+
 					}
         },
         {
@@ -66,5 +67,28 @@ export class FriendsScreenPage {
 
 
   }
+  private getStatusText(status)
+	{
+    switch(status) 
+    { 
+			case 2: { 
+			   return " Dostępny. :)"; 
+			   break; 
+			} 
+			case 1: { 
+				return " Dostępny tylko dla znajomych. :/"; 
+			   break;  
+			} 
+			case 0: { 
+				return " Niedostępny. :("; 
+				break; 
+			 } 
+			default: { 
+				return " Error";  
+			   break; 
+			} 
+		 } 
+	}
+
 
 }

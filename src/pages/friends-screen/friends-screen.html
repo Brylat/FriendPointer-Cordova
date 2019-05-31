@@ -28,7 +28,7 @@
       <ion-list>
         <button ion-item color="light" round *ngFor="let friend of friendsList" (click)="getMenu(friend)" style="margin-top: 5px;">
           <ion-icon name='person' item-left></ion-icon>
-          {{ friend.name }} {{ friend.surname }}, Status: {{ friend.status }}
+          {{ friend.name }} {{ friend.surname }}, Status: {{ getStatusText(friend.status) }}
         </button>
       </ion-list>
     </ion-card-content>
