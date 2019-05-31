@@ -44,6 +44,8 @@ export class GoogleMapsPage {
 		};
 		this.zoom = 10;
 		this.loading.dismiss();
+
+		console.log(this)
 	}
 
 	private async initData(): Promise<void> {
@@ -54,7 +56,7 @@ export class GoogleMapsPage {
 	private async acquireData(){
 		this.events = (await this.databaseService.getAllEvents()).map(x => {
 			if(!x.participants){
-			x.participants = new Set<string>();
+			x.participants = new Array<string>();
 		}
 		return x;
 		;});
@@ -82,10 +84,9 @@ export class GoogleMapsPage {
 	}
 
 	public clickedEvent(event: CustomEventWrapper) {
-		console.log("particip:", event.participants.size)
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "Limit: " + event.limit + " Zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
+			subTitle: "Limit: " + event.limit + " Zajęte: " + ((Object.keys(event.participants).length == undefined) ? 0 : Object.keys(event.participants).length),
 			message: event.description,
 			buttons: [
 				{
@@ -97,13 +98,14 @@ export class GoogleMapsPage {
 				{
 					text: 'Dołącz',
 					handler: data => {
-						if(event.limit>event.participants.size || event.participants.size==undefined){
+						if(event.limit>Object.keys(event.participants).length || Object.keys(event.participants).length==undefined){
 							this.databaseService.addParticipant(event.uid, this.currentUser[0].uid);
 							this.events.map(eventTmp => {
 								if(eventTmp.uid == event.uid){
 									this.events.splice(this.events.indexOf(event), 1);
 								}
 							})
+							event.participants.push(this.currentUser[0].uid)
 							this.joinedEvents.push(event);
 						} else {
 							this.alertCtrl.create({
@@ -122,7 +124,7 @@ export class GoogleMapsPage {
 	public clickedOwnEvent(event: CustomEventWrapper) {
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "Limit: " + event.limit + " Zajęte: " + ((!event.participants || !event.participants.size) ? 0 : event.participants.size),
+			subTitle: "Limit: " + event.limit + " Zajęte: " + Object.keys(event.participants).length,
 			message: event.description,
 			buttons: [
 				{
@@ -206,7 +208,7 @@ export class GoogleMapsPage {
 	public clickedJoinedEvent(event: CustomEventWrapper) {
 		let alert = this.alertCtrl.create({
 			title: event.name,
-			subTitle: "limit: " + event.limit + " Zajęte: " + ((event.participants.size == undefined) ? 0 : event.participants.size),
+			subTitle: "limit: " + event.limit + " Zajęte: " + ((Object.keys(event.participants).length == undefined) ? 0 : Object.keys(event.participants).length),
 			message: event.description,
 			buttons: [
 				{
@@ -224,6 +226,8 @@ export class GoogleMapsPage {
 								this.joinedEvents.splice(this.joinedEvents.indexOf(event), 1);
 							}
 						})
+						event.participants.pop();
+						this.events.push(event);
 					}
 				}
 			]
@@ -278,7 +282,7 @@ export class GoogleMapsPage {
 			limit: data.limit,
 			createDate: new Date(),
 			uid: UUID.UUID().toString(),
-			participants: new Set<string>(),
+			participants: new Array<string>(),
 			localization: new firestore.GeoPoint(event.coords.lat, event.coords.lng),
 			ownerUid: ''
 		};
