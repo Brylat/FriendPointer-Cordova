@@ -22,6 +22,7 @@ import { AuthService } from '../services/auth.service';
 import { SignupPage } from '../pages/signup/signup';
 import { DatabaseService } from '../services/database.service';
 import { Geolocation } from '@ionic-native/geolocation';
+import { SingleGoogleMapsModule } from '../pages/single-google-maps/single-google-maps.module';
 
 @NgModule({
 	declarations: [
@@ -40,6 +41,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 		ComponentsModule,
 		NgxErrorsModule,
 		GoogleMapsModule,
+		SingleGoogleMapsModule,
 		HomeModule,
 		SlideBoxModule,
 		SettingsScreenModule,
