@@ -20,6 +20,9 @@ export class DatabaseService {
         await firebase.firestore().collection('users')
             .doc(this.authService.getUID())
             .set(JSON.parse(JSON.stringify(user)), { merge: true });
+        await firebase.firestore().collection('users')
+            .doc(this.authService.getUID())
+            .update({ localization: new firebase.firestore.GeoPoint(user.localization.latitude, user.localization.longitude) });
     }
 
     public async updateCurrentUserLocation(newLocalizatation: firebase.firestore.GeoPoint) {
