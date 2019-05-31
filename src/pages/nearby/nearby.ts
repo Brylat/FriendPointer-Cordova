@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {DatabaseService} from "../../services/database.service";
 
 /**
  * Generated class for the NearbyPage page.
@@ -15,11 +16,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NearbyPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private databaseService: DatabaseService;
+  private eventList: Array<Object>;
+  constructor(public navCtrl: NavController, public navParams: NavParams, databaseService: DatabaseService) {
+    this.databaseService = databaseService;
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NearbyPage');
+    this.databaseService.getAllEvents().then((res) => {this.eventList = (res)});
   }
-
 }
