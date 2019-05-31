@@ -45,7 +45,7 @@ export class GoogleMapsPage {
 		this.zoom = 10;
 		this.loading.dismiss();
 
-		console.log(this)
+		console.log(this);
 	}
 
 	private async initData(): Promise<void> {
@@ -252,6 +252,12 @@ export class GoogleMapsPage {
 					placeholder: 'limit osób',
 					type: 'number',
 					min: 1
+				},
+				{
+					name: 'activeTime',
+					placeholder: 'wygaśnięcie za (godzin)',
+					type: 'number',
+					max: 24
 				}
 			],
 			buttons: [
@@ -276,11 +282,13 @@ export class GoogleMapsPage {
 	}
 
 	generateCustomEventWrapper(event, data) {
+		console.log("aaa " + data.activeTime)
 		let newCustomEvent: CustomEventWrapper = {
 			name: data.nazwa,
 			description: data.opis,
 			limit: data.limit,
 			createDate: new Date(),
+			stopDate: new Date(new Date().getTime() + (1000 * 60 * 60 * (data.activeTime as number))),
 			uid: UUID.UUID().toString(),
 			participants: new Array<string>(),
 			localization: new firestore.GeoPoint(event.coords.lat, event.coords.lng),
