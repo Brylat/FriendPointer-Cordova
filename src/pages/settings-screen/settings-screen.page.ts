@@ -28,15 +28,11 @@ export class SettingsScreenPage {
 		this.destription = this.currentUser.description;
 		this.changeStatusText(this.currentUser.status ? this.currentUser.status : 1);
 	}
-	private async updateDestription()
-	{
-		this.currentUser.description = this.destription;
-		await this.databaseService.createOrUpdateUser(this.currentUser);
-	}
-	private async updateNameSurname()
+	private async updateDate()
 	{
 		this.currentUser.name = this.name;
 		this.currentUser.surname = this.surname;
+		this.currentUser.description = this.destription;
 		await this.databaseService.createOrUpdateUser(this.currentUser);
 	}
 	private async updateStatus(status)
@@ -48,15 +44,15 @@ export class SettingsScreenPage {
 	private changeStatusText(status)
 	{
 		switch(status) { 
-			case 1: { 
+			case 2: { 
 			   this.statusText = "Twój status to: Dostępny. :)"; 
 			   break; 
 			} 
-			case 2: { 
+			case 1: { 
 				this.statusText = "Twój status to: Dostępny tylko dla znajomych. :/"; 
 			   break; 
 			} 
-			case 3: { 
+			case 0: { 
 				this.statusText = "Twój status to: Niedostępny. :("; 
 				break; 
 			 } 
