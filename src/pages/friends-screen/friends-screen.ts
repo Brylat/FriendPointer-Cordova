@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DatabaseService } from '../../services/database.service';
+import User from '../wrapers/user';
 
 /**
  * Generated class for the FriendsScreenPage page.
@@ -15,11 +17,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class FriendsScreenPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private databaseService: DatabaseService;
+  constructor(public navCtrl: NavController, public navParams: NavParams, databaseService: DatabaseService) {
+    this.databaseService = databaseService;
+		this.getFriendsLiset();
   }
+
+  private friendsList: User[];
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FriendsScreenPage');
+  }
+
+  private async getFriendsLiset()
+  {
+    this.friendsList = await this.databaseService.getAllFriendsData();
   }
 
 }

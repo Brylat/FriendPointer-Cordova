@@ -6,6 +6,7 @@ import { ComponentsListPage } from '../pages/components/list/components.list.pag
 import { GoogleMapsPage } from '../pages/google-maps/google-maps.page';
 import { HomePage } from '../pages/home/home.page';
 import { SettingsScreenPage } from '../pages/settings-screen/settings-screen.page';
+import { FriendsScreenPage } from '../pages/friends-screen/friends-screen';
 import { SlideBoxPage } from '../pages/slide-box/slide-box.page';
 import { WordpressListPage } from '../pages/wordpress/list/wordpress.list.page';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
@@ -49,6 +50,7 @@ export class MyApp {
 			{ title: 'Wordpress', component: WordpressListPage, icon: 'logo-wordpress' },
 			{ title: 'Slides', component: SlideBoxPage, icon: 'swap' },
 			{ title: 'Settings ', component: SettingsScreenPage, icon: 'swap' },
+			{ title: 'FriendsPage ', component: FriendsScreenPage, icon: 'swap' },
 			{ title: 'Google maps', component: GoogleMapsPage, icon: 'map' },
 			{ title: 'Components', component: ComponentsListPage, icon: 'grid' },
 		];
