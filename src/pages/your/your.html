@@ -19,6 +19,7 @@
       <ion-card-header>
         <ion-card-title>
           {{event.name}}
+          <ion-icon name="locate" style="float: right;" (click)="goToEvent(event)"></ion-icon>
         </ion-card-title>
         <p>
           <ion-icon name="time"></ion-icon>&nbsp;&nbsp;
@@ -27,7 +28,7 @@
       </ion-card-header>
       <ion-card-content>
         <p>{{event.description}}</p>
-        <div><ion-icon name="person"></ion-icon>&nbsp;&nbsp;x&nbsp;&nbsp;{{event.limit}}</div>
+        <p style="float: left"><ion-icon name="person"></ion-icon>&nbsp;&nbsp;x&nbsp;&nbsp;{{event.limit}}</p>
       </ion-card-content>
     </ion-card>
   </ion-list>
