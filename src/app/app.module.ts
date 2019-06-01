@@ -7,13 +7,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Config } from '../config';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { ComponentsModule } from '../pages/components/components.module';
 import { GoogleMapsModule } from '../pages/google-maps/google-maps.module';
-import { HomeModule } from '../pages/home/home.module';
-import { SlideBoxModule } from '../pages/slide-box/slide-box.module';
 import { SettingsScreenModule } from '../pages/settings-screen/settings-screen.module';
 import { FriendsScreenPageModule } from '../pages/friends-screen/friends-screen.module';
-import { WordpressModule } from '../pages/wordpress/wordpress.module';
 import { MyApp } from './app.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -42,17 +38,12 @@ import { OfflinePage } from '../pages/offline/offline';
 
 		AngularFireModule.initializeApp(firebaseConfig.fire),
 		AngularFirestoreModule,
-		ComponentsModule,
 		NgxErrorsModule,
 		GoogleMapsModule,
 		SingleGoogleMapsModule,
-		HomeModule,
-		SlideBoxModule,
 		SettingsScreenModule,
-		WordpressModule,
 		EventsPageModule,
-		FriendsScreenPageModule,
-		WordpressModule
+		FriendsScreenPageModule
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [

@@ -15,12 +15,12 @@
 
 		<ion-item (click)="logout()" *ngIf="auth.authenticated">
 			<ion-icon name="log-out" item-left></ion-icon>
-			Log out
+			Wyloguj się
 		</ion-item>
 
 		<ion-item (click)="login()" *ngIf="!auth.authenticated">
 			<ion-icon name="log-in" item-left></ion-icon>
-			Log in
+			Zaloguj się
 		</ion-item>
 	</ion-list>
 
@@ -28,4 +28,5 @@
 
 </ion-menu>
 
-<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+<ion-nav id="nav" [root]="rootPage" #content swipe-back-enabled="false"></ion-nav>
+

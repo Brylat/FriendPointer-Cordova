@@ -2,13 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { App, MenuController, Nav, Platform } from 'ionic-angular';
-import { ComponentsListPage } from '../pages/components/list/components.list.page';
 import { GoogleMapsPage } from '../pages/google-maps/google-maps.page';
-import { HomePage } from '../pages/home/home.page';
 import { SettingsScreenPage } from '../pages/settings-screen/settings-screen.page';
 import { FriendsScreenPage } from '../pages/friends-screen/friends-screen';
-import { SlideBoxPage } from '../pages/slide-box/slide-box.page';
-import { WordpressListPage } from '../pages/wordpress/list/wordpress.list.page';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth.service';
@@ -48,14 +44,10 @@ export class MyApp {
 
 		// set our app's pages
 		this.pages = [
-			{ title: 'Home', component: HomePage, icon: 'home' },
-			{ title: 'Wordpress', component: WordpressListPage, icon: 'logo-wordpress' },
-			{ title: 'Slides', component: SlideBoxPage, icon: 'swap' },
-			{ title: 'Settings ', component: SettingsScreenPage, icon: 'swap' },
-			{ title: 'FriendsPage ', component: FriendsScreenPage, icon: 'swap' },
-			{ title: 'Google maps', component: GoogleMapsPage, icon: 'map' },
-			{ title: 'Events', component: EventsPage, icon: 'flame' },
-			{ title: 'Components', component: ComponentsListPage, icon: 'grid' },
+			{ title: 'Mapa', component: GoogleMapsPage, icon: 'map' },
+			{ title: 'Wydarzenia', component: EventsPage, icon: 'flame' },
+			{ title: 'Znajomi', component: FriendsScreenPage, icon: 'person' },
+			{ title: 'Ustawienia', component: SettingsScreenPage, icon: 'settings' }
 		];
 	}
 
@@ -69,7 +61,7 @@ export class MyApp {
 			.subscribe(
 				user => {
 					if (user) {
-						this.rootPage = HomePage;
+						this.rootPage = GoogleMapsPage;
 						this.menu.enable(true);
 						this.afterLoginAction();
 					} else {
@@ -81,7 +73,7 @@ export class MyApp {
 					}
 				},
 				() => {
-					this.rootPage = SlideBoxPage;
+					this.rootPage = GoogleMapsPage;
 					this.menu.enable(false);
 				}
 			);
@@ -123,7 +115,7 @@ export class MyApp {
 	logout() {
 		this.menu.close();
 		this.auth.signOut();
-		this.nav.setRoot(HomePage);
+		this.nav.setRoot(GoogleMapsPage);
 	}
 
 	openPage(page) {
