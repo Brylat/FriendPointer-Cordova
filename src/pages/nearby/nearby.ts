@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
-import {DatabaseService} from "../../services/database.service";
-import {AuthService} from "../../services/auth.service";
+import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
+import { DatabaseService } from '../../services/database.service';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Generated class for the NearbyPage page.
