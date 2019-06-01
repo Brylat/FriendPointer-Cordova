@@ -38,7 +38,7 @@ export class NearbyPage {
     ionViewDidLoad() {
         console.log('ionViewDidLoad NearbyPage');
         const loader = this.loadingCtrl.create({
-            content: "Please wait..."
+            content: "Proszę czekać..."
         });
         loader.present();
         this.databaseService.getNearEvent().then((res) => {
@@ -91,8 +91,8 @@ export class NearbyPage {
 
     async eventAlert(event) {
         let alert = this.alertCtrl.create({
-            title: 'Event is full',
-            subTitle: 'Event "' + event.name + '" is full, you cannot join it.',
+            title: 'Wydarzenie pełne',
+            subTitle: 'Wydarzenie "' + event.name + '" jest pełne, nie możesz dołączyć.',
             buttons: ['Ok'],
         });
         return await alert.present();

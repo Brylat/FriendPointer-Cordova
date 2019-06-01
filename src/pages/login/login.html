@@ -3,7 +3,7 @@
 		<button ion-button menuToggle>
 			<ion-icon name="menu"></ion-icon>
 		</button>
-		<ion-title>Log in</ion-title>
+		<ion-title>Zaloguj się</ion-title>
 	</ion-navbar>
 </ion-header>
 
@@ -16,7 +16,7 @@
 			</ion-item>
 
 			<div ngxErrors="email" #emailErrors="ngxErrors">
-				<div [ngxError]="['email', 'required']" [when]="['touched', 'dirty']">It should be a valid email</div>
+				<div [ngxError]="['email', 'required']" [when]="['touched', 'dirty']">Podaj poprawny e-mail</div>
 			</div>
 
 			<ion-item [ngClass]="{ invalid: passwordErrors.hasError('*', ['touched']) }">
@@ -24,25 +24,25 @@
 			</ion-item>
 
 			<div ngxErrors="password" #passwordErrors="ngxErrors">
-				<div [ngxError]="['minlength', 'required']" [when]="['touched']">It should be at least 5 characters</div>
+				<div [ngxError]="['minlength', 'required']" [when]="['touched']">Za krótkie hasło</div>
 			</div>
 		</ion-list>
 
 		<div padding-horizontal>
 			<div class="form-error">{{loginError}}</div>
 
-			<button ion-button full type="submit" [disabled]="!loginForm.valid">Log in</button>
+			<button ion-button full type="submit" [disabled]="!loginForm.valid">Zaloguj się</button>
 
 			<ion-list>
 
 				<button ion-button icon-left block clear (click)="loginWithGoogle()">
 					<ion-icon name="logo-google"></ion-icon>
-					Log in with Google
+					Zaloguj się przez Google
 				</button>
 
 				<button ion-button icon-left block clear (click)="signup()">
 					<ion-icon name="person-add"></ion-icon>
-					Sign up
+					Zarejestruj się
 				</button>
 			</ion-list>
 		</div>

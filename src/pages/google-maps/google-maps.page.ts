@@ -256,13 +256,13 @@ export class GoogleMapsPage {
 				},
 				{
 					name: 'limit',
-					placeholder: 'limit osób',
+					placeholder: 'Limit osób',
 					type: 'number',
 					min: 1
 				},
 				{
 					name: 'activeTime',
-					placeholder: 'wygaśnięcie za (godzin)',
+					placeholder: 'Wygaśnięcie za (godzin)',
 					type: 'number',
 					max: 24
 				}

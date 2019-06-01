@@ -33,7 +33,7 @@ export class YourPage {
     ionViewDidLoad() {
         console.log('ionViewDidLoad YourPage');
         const loader = this.loadingCtrl.create({
-            content: "Please wait..."
+            content: "Proszę czekać..."
         });
         loader.present();
         this.databaseService.getAllOwnEvents().then((res) => {
