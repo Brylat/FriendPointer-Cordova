@@ -34,6 +34,7 @@ export class FriendsScreenPage {
   {
     let alert = this.alertCtrl.create({
 			title: user.name+" "+user.surname,
+			subTitle: this.getStatusText(user.status),
 			buttons: [
 				{
 					text: 'Pokaż na mapie',
@@ -64,7 +65,6 @@ export class FriendsScreenPage {
 					handler: data => {
             this.databaseService.deleteFriend(user.uid);
             this.friendsList = this.friendsList.filter(x => x.uid !== user.uid)
-
 					}
         },
         {
@@ -83,15 +83,15 @@ export class FriendsScreenPage {
     switch(status) 
     { 
 			case 2: { 
-			   return " Dostępny. :)"; 
+			   return " Dostępny"; 
 			   
 			} 
 			case 1: { 
-				return " Dostępny tylko dla znajomych. :/"; 
+				return " Dostępny tylko dla znajomych"; 
 			    
 			} 
 			case 0: { 
-				return " Niedostępny. :("; 
+				return " Niedostępny"; 
 				
 			 } 
 			default: { 
