@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { DatabaseService } from '../../services/database.service';
+import { SingleGoogleMapsPage } from '../single-google-maps/single-google-maps.page';
 
 /**
  * Generated class for the YourPage page.
@@ -35,7 +36,7 @@ export class YourPage {
             content: "Please wait..."
         });
         loader.present();
-        this.databaseService.getAllEvents().then((res) => {
+        this.databaseService.getAllOwnEvents().then((res) => {
             let responseList = (res);
             for (let response of responseList) {
                 this.eventList.push(
@@ -57,6 +58,8 @@ export class YourPage {
     }
 
     goToEvent(event) {
-        alert('My name is: "' + event.name + '" and want to go to my location!');
+        this.navCtrl.push(SingleGoogleMapsPage,{
+            event: event
+            });
     }
 }

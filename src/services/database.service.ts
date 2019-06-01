@@ -100,7 +100,7 @@ export class DatabaseService {
 
     public async getAllEvents(): Promise<CustomEventWrapper[]> {
         const snapshot = await firebase.firestore().collection('events').get()
-        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper).filter(x => new Date(x.stopDate).getTime() >= new Date().getTime());
     }
 
     public async getNearEvent() {
@@ -116,14 +116,14 @@ export class DatabaseService {
     
         let greaterLat = position.coords.latitude + (lat * distance)
         let greaterLon = position.coords.longitude + (lon * distance)
-    
-        let lesserGeopoint = new firebase.firestore.GeoPoint(lowerLat, lowerLon)
-        let greaterGeopoint = new firebase.firestore.GeoPoint(greaterLat, greaterLon)
-    
-        let docRef = firebase.firestore().collection("events")
-        let snapshot = await docRef.where("location", ">", lesserGeopoint).where("location", "<", greaterGeopoint).where("ownerUid", ">", myUid).where("ownerUid", "<", myUid).get();
-        
-        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+        let now = new Date();
+        const snapshot = await firebase.firestore().collection('events').get()
+        let events = snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+        events = events.filter(x => x.ownerUid !== myUid)
+            .filter(x => x.localization.latitude > lowerLat && x.localization.latitude < greaterLat)
+            .filter(x => x.localization.longitude > lowerLon && x.localization.longitude < greaterLon)
+            .filter(x => new Date(x.stopDate).getTime() >= now.getTime());
+        return events;
     }
 
 

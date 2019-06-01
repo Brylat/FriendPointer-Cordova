@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { DatabaseService } from '../../services/database.service';
 import { AuthService } from '../../services/auth.service';
+import { SingleGoogleMapsPage } from '../single-google-maps/single-google-maps.page';
 
 /**
  * Generated class for the NearbyPage page.
@@ -40,7 +41,7 @@ export class NearbyPage {
             content: "Please wait..."
         });
         loader.present();
-        this.databaseService.getAllEvents().then((res) => {
+        this.databaseService.getNearEvent().then((res) => {
             let responseList = (res);
             for (let response of responseList) {
                 this.eventList.push(
@@ -83,7 +84,9 @@ export class NearbyPage {
     }
 
     goToEvent(event) {
-        alert('My name is: "' + event.name + '" and want to go to my location!');
+        this.navCtrl.push(SingleGoogleMapsPage,{
+            event: event
+            });
     }
 
     async eventAlert(event) {
