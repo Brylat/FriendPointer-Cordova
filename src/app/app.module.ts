@@ -23,7 +23,8 @@ import { AuthService } from '../services/auth.service';
 import { SignupPage } from '../pages/signup/signup';
 import { DatabaseService } from '../services/database.service';
 import { Geolocation } from '@ionic-native/geolocation';
-import { SingleGoogleMapsModule } from '../pages/single-google-maps/single-google-maps.module'
+import { SingleGoogleMapsModule } from '../pages/single-google-maps/single-google-maps.module';
+import { EventsPageModule } from "../pages/events/events.module";
 import { OfflinePage } from '../pages/offline/offline';
 
 @NgModule({
@@ -48,6 +49,8 @@ import { OfflinePage } from '../pages/offline/offline';
 		HomeModule,
 		SlideBoxModule,
 		SettingsScreenModule,
+		WordpressModule,
+		EventsPageModule,
 		FriendsScreenPageModule,
 		WordpressModule
 	],

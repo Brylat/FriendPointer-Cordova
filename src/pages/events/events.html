@@ -1,0 +1,13 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Events</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-tabs tabsPlacement="top">
+    <ion-tab [root]="yourRoot" tabTitle="Your" tabIcon="person"></ion-tab>
+    <ion-tab [root]="nearbyRoot" tabTitle="Nearby" tabIcon="globe"></ion-tab>
+</ion-tabs>

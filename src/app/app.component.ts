@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
 import { firestore } from 'firebase/app';
 import User from '../pages/wrapers/user';
+import { EventsPage } from '../pages/events/events';
 import { OfflinePage } from '../pages/offline/offline';
 
 @Component({
@@ -53,6 +54,7 @@ export class MyApp {
 			{ title: 'Settings ', component: SettingsScreenPage, icon: 'swap' },
 			{ title: 'FriendsPage ', component: FriendsScreenPage, icon: 'swap' },
 			{ title: 'Google maps', component: GoogleMapsPage, icon: 'map' },
+			{ title: 'Events', component: EventsPage, icon: 'flame' },
 			{ title: 'Components', component: ComponentsListPage, icon: 'grid' },
 		];
 	}
@@ -61,7 +63,7 @@ export class MyApp {
 		this.platform.ready().then(() => {
 			this.statusBar.styleDefault();
 		});
-		
+
 		if (navigator.onLine) {
 			this.auth.afAuth.authState
 			.subscribe(
@@ -87,7 +89,7 @@ export class MyApp {
 			this.rootPage = OfflinePage;
 			this.menu.enable(false);
 		}
-	
+
 	}
 
 	private async afterLoginAction() {

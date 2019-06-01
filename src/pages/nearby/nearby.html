@@ -1,0 +1,40 @@
+<!--
+  Generated template for the NearbyPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Nearby</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list>
+        <ion-card *ngFor="let event of eventList">
+            <ion-card-header>
+                <ion-card-title>
+                  {{event.name}}
+                  <ion-icon name="checkmark" style="float: right; color: #4cbb17" (click)="join($event, event)"
+                            *ngIf="event.participants.indexOf(this.authService.getUID()) > -1 else unchecked"></ion-icon>
+                  <ng-template #unchecked>
+                  <ion-icon name="checkmark" style="float: right" (click)="join($event, event)"></ion-icon>
+                  </ng-template>
+                  <ion-icon name="locate" style="float: right; margin-right: 5px;" (click)="goToEvent(event)"></ion-icon>
+                </ion-card-title>
+                <p>
+                    <ion-icon name="time"></ion-icon>&nbsp;&nbsp;
+                    {{event.stopDate.toLocaleDateString()}}, {{event.stopDate.toLocaleTimeString()}}
+                </p>
+            </ion-card-header>
+            <ion-card-content>
+                <p>{{event.description}}</p>
+                <p style="float: left"><ion-icon name="person"></ion-icon>&nbsp;&nbsp;x&nbsp;&nbsp;{{event.limit}}</p>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
+</ion-content>
