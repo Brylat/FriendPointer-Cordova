@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {DatabaseService} from "../../services/database.service";
+import {AuthService} from "../../services/auth.service";
 
 /**
  * Generated class for the NearbyPage page.
@@ -17,13 +18,16 @@ import {DatabaseService} from "../../services/database.service";
 export class NearbyPage {
 
   private databaseService: DatabaseService;
+  private authService: AuthService;
   private eventList: Array<Object>;
   constructor(
       private navCtrl: NavController,
       private navParams: NavParams,
       databaseService: DatabaseService,
+      authService: AuthService,
       private loadingCtrl: LoadingController) {
     this.databaseService = databaseService;
+    this.authService = authService;
     this.eventList = Array();
   }
 
@@ -51,7 +55,23 @@ export class NearbyPage {
         );
       }
       loader.dismissAll();
-
     });
+  }
+
+
+  join(referer, eventId) {
+      let uid = this.authService.getUID();
+      let referer_status = referer.currentTarget.style.color;
+      if (referer_status === "") {
+          this.databaseService.addParticipant(eventId, uid).then(
+              (res) => {
+                  referer.currentTarget.style.color = "#4cbb17";
+              });
+      } else {
+          this.databaseService.deleteParticipant(eventId, uid).then(
+              (res) => {
+                  referer.currentTarget.style.color = "";
+              });
+      }
   }
 }
