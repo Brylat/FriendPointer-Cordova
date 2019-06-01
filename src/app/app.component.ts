@@ -61,7 +61,7 @@ export class MyApp {
 			.subscribe(
 				user => {
 					if (user) {
-						this.rootPage = GoogleMapsPage;
+						this.rootPage = SettingsScreenPage;
 						this.menu.enable(true);
 						this.afterLoginAction();
 					} else {
@@ -73,7 +73,7 @@ export class MyApp {
 					}
 				},
 				() => {
-					this.rootPage = GoogleMapsPage;
+					this.rootPage = SettingsScreenPage;
 					this.menu.enable(false);
 				}
 			);
