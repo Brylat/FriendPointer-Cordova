@@ -7,9 +7,9 @@
 <ion-header>
 
   <ion-navbar>
-      <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-      </button>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>friends-screen</ion-title>
   </ion-navbar>
 
@@ -18,19 +18,17 @@
 
 <ion-content padding>
 
-  <ion-card>
-    <ion-card-header>
-        <ion-icon name="people" item-left></ion-icon>
-      Lista twoich przyjaciół: 
-    </ion-card-header>
-    <ion-card-content>
-      Tutaj możesz przeglądać liste twoich przyjaciół, sprawdzić gdzie znajdują się na mapie oraz również usunąć ich z listy.
-      <ion-list>
-        <button ion-item color="light" round *ngFor="let friend of friendsList" (click)="getMenu(friend)" style="margin-top: 5px;">
-          <ion-icon name='person' item-left></ion-icon>
-          {{ friend.name }} {{ friend.surname }}, Status: {{ getStatusText(friend.status) }}
-        </button>
-      </ion-list>
+  <ion-icon name="people" item-left></ion-icon>
+  Lista twoich przyjaciół:
+
+  Tutaj możesz przeglądać liste twoich przyjaciół, sprawdzić gdzie znajdują się na mapie oraz również usunąć ich z
+  listy.
+  <ion-list>
+    <ion-card-content ion-item round *ngFor="let friend of friendsList" (click)="getMenu(friend)"
+      style="margin-top: 5px;">
+      <ion-icon name='person' item-left></ion-icon>
+      {{ friend.name }} {{ friend.surname }}<br />
+      Status: {{ getStatusText(friend.status) }}
     </ion-card-content>
-  </ion-card>
+  </ion-list>
 </ion-content>

@@ -26,7 +26,7 @@ export class SettingsScreenPage {
 		this.name = this.currentUser.name;
 		this.surname = this.currentUser.surname;
 		this.destription = this.currentUser.description;
-		this.changeStatusText(this.currentUser.status ? this.currentUser.status : 1);
+		this.changeStatusText(this.currentUser.status !== undefined ? this.currentUser.status : 1);
 	}
 	private async updateDate()
 	{
@@ -45,15 +45,15 @@ export class SettingsScreenPage {
 	{
 		switch(status) { 
 			case 2: { 
-			   this.statusText = "Twój status to: Dostępny. :)"; 
+			   this.statusText = "Widoczny"; 
 			   break; 
 			} 
 			case 1: { 
-				this.statusText = "Twój status to: Dostępny tylko dla znajomych. :/"; 
+				this.statusText = "Tylko dla znajomych"; 
 			   break; 
 			} 
 			case 0: { 
-				this.statusText = "Twój status to: Niedostępny. :("; 
+				this.statusText = "Niewidoczny"; 
 				break; 
 			 } 
 			default: { 

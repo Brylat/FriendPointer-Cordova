@@ -24,13 +24,15 @@ import { SignupPage } from '../pages/signup/signup';
 import { DatabaseService } from '../services/database.service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { SingleGoogleMapsModule } from '../pages/single-google-maps/single-google-maps.module';
-import {EventsPageModule} from "../pages/events/events.module";
+import { EventsPageModule } from "../pages/events/events.module";
+import { OfflinePage } from '../pages/offline/offline';
 
 @NgModule({
 	declarations: [
 		MyApp,
 		LoginPage,
-		SignupPage
+		SignupPage,
+		OfflinePage
 	],
 	imports: [
 		BrowserModule,
@@ -56,7 +58,8 @@ import {EventsPageModule} from "../pages/events/events.module";
 	entryComponents: [
 		MyApp,
 		LoginPage,
-		SignupPage
+		SignupPage,
+		OfflinePage
 	],
 	providers: [
 		Config,
