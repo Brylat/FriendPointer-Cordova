@@ -7,12 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>offline</ion-title>
+      <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+      </button>
+    <ion-title>Offline screen</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-card>
+		<ion-card-header>
+			<h1><ion-icon name="rainy" color="primary" style="margin-right: 5px;"></ion-icon>Brak połączenia z siecią!</h1>
+		</ion-card-header>
+		<ion-card-content>
+			<h2 style="text-align: center;">Wygląda na to że nie masz w tej chwili połączenia z siecią, sprawdź ustawienia WiFi bądź pakietów internetowych i spróbuj ponownie.</h2>
+		</ion-card-content>
+	</ion-card>
 </ion-content>
