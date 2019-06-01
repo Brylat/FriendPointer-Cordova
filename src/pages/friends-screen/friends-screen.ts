@@ -4,13 +4,7 @@ import { DatabaseService } from '../../services/database.service';
 import { AlertController } from 'ionic-angular';
 import User from '../wrapers/user';
 import { SingleGoogleMapsPage } from '../single-google-maps/single-google-maps.page';
-
-/**
- * Generated class for the FriendsScreenPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AuthService } from '../../services/auth.service';
 
 @IonicPage()
 @Component({
@@ -20,7 +14,7 @@ import { SingleGoogleMapsPage } from '../single-google-maps/single-google-maps.p
 export class FriendsScreenPage {
 
   private databaseService: DatabaseService;
-  constructor(public navCtrl: NavController, public navParams: NavParams, databaseService: DatabaseService, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, databaseService: DatabaseService, private alertCtrl: AlertController, private authService: AuthService) {
     this.databaseService = databaseService;
 		this.getFriendsLiset();
   }
@@ -36,7 +30,7 @@ export class FriendsScreenPage {
     this.friendsList = await this.databaseService.getAllFriendsData();
   }
 
-  private getMenu(user)
+  private getMenu(user: User)
   {
     let alert = this.alertCtrl.create({
 			title: user.name+" "+user.surname,
@@ -44,17 +38,25 @@ export class FriendsScreenPage {
 				{
 					text: 'Pokaż na mapie',
 					handler: data => {
-						if (user.status > 0){
-							this.navCtrl.push(SingleGoogleMapsPage,{
-								user:user
-								});
+						if (user.status > 0) {
+							if (user.status == 1 && user.friends.indexOf(this.authService.getUID()) < -1){
+								this.alertCtrl.create({
+									title: 'Nie można pokazać lokalizacji',
+									message: 'Użytkownik w tym momencie udostępnia lokalizację tylko dla swoich znajomych',
+									buttons: ['Ok']
+								}).present()
+							} else {
+								this.navCtrl.push(SingleGoogleMapsPage,{
+									user:user
+									});
+							}		
 						} else {
 							this.alertCtrl.create({
 								title: 'Nie można pokazać lokalizacji',
 								message: 'Użytkownik w tym momencie jest niewidoczny na mapie',
 								buttons: ['Ok']
 							}).present()
-						}         
+						}        
           }
         },
         {
@@ -74,9 +76,8 @@ export class FriendsScreenPage {
 			]
 		});
 		alert.present();
-
-
-  }
+	}
+	
   private getStatusText(status)
 	{
     switch(status) 
