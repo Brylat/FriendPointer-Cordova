@@ -115,7 +115,7 @@ export class MyApp {
 	logout() {
 		this.menu.close();
 		this.auth.signOut();
-		this.nav.setRoot(GoogleMapsPage);
+		this.nav.setRoot(LoginPage);
 	}
 
 	openPage(page) {
