@@ -14,4 +14,21 @@
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-card *ngFor="let event of eventList">
+      <ion-card-header>
+        <ion-card-title>
+          {{event.name}}
+        </ion-card-title>
+        <p>
+          <ion-icon name="time"></ion-icon>&nbsp;&nbsp;
+          {{event.stopDate.toLocaleDateString()}}, {{event.stopDate.toLocaleTimeString()}}
+        </p>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{event.description}}</p>
+        <div><ion-icon name="person"></ion-icon>&nbsp;&nbsp;x&nbsp;&nbsp;{{event.limit}}</div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>
