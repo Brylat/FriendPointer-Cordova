@@ -24,7 +24,7 @@
   Tutaj możesz przeglądać liste twoich przyjaciół, sprawdzić gdzie znajdują się na mapie oraz również usunąć ich z
   listy.
   <ion-list>
-    <ion-card-content ion-item color="light" round *ngFor="let friend of friendsList" (click)="getMenu(friend)"
+    <ion-card-content ion-item round *ngFor="let friend of friendsList" (click)="getMenu(friend)"
       style="margin-top: 5px;">
       <ion-icon name='person' item-left></ion-icon>
       {{ friend.name }} {{ friend.surname }}<br />

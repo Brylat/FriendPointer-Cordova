@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { DatabaseService } from '../services/database.service';
 import { firestore } from 'firebase/app';
 import User from '../pages/wrapers/user';
+import { OfflinePage } from '../pages/offline/offline';
 
 @Component({
 	templateUrl: 'app.html'
@@ -60,9 +61,9 @@ export class MyApp {
 		this.platform.ready().then(() => {
 			this.statusBar.styleDefault();
 		});
-
-
-		this.auth.afAuth.authState
+		
+		if (navigator.onLine) {
+			this.auth.afAuth.authState
 			.subscribe(
 				user => {
 					if (user) {
@@ -78,10 +79,15 @@ export class MyApp {
 					}
 				},
 				() => {
-					this.rootPage = LoginPage;
+					this.rootPage = SlideBoxPage;
 					this.menu.enable(false);
 				}
 			);
+		} else {
+			this.rootPage = OfflinePage;
+			this.menu.enable(false);
+		}
+	
 	}
 
 	private async afterLoginAction() {
