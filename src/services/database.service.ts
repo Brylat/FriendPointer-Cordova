@@ -3,11 +3,12 @@ import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import User from '../pages/wrapers/user';
 import CustomEventWrapper from '../pages/wrapers/event';
+import { Geolocation } from '@ionic-native/geolocation';
 import { getCurrentDebugContext } from '@angular/core/src/view/services';
 
 @Injectable()
 export class DatabaseService {
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService, private geolocation: Geolocation) { }
 
     public async getCurrentUserData(): Promise<User> {
         const snapshot = await firebase.firestore().collection('users')
@@ -98,10 +99,33 @@ export class DatabaseService {
     }
 
     public async getAllEvents(): Promise<CustomEventWrapper[]> {
-        //add restriction date
         const snapshot = await firebase.firestore().collection('events').get()
         return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
     }
+
+    public async getNearEvent() {
+        let position = await this.geolocation.getCurrentPosition();
+        const myUid = await this.authService.getUID();
+        // ~1 mile of lat and lon in degrees
+        let lat = 0.0144927536231884
+        let lon = 0.0181818181818182
+        let distance = 10;
+    
+        let lowerLat = position.coords.latitude - (lat * distance)
+        let lowerLon = position.coords.longitude - (lon * distance)
+    
+        let greaterLat = position.coords.latitude + (lat * distance)
+        let greaterLon = position.coords.longitude + (lon * distance)
+    
+        let lesserGeopoint = new firebase.firestore.GeoPoint(lowerLat, lowerLon)
+        let greaterGeopoint = new firebase.firestore.GeoPoint(greaterLat, greaterLon)
+    
+        let docRef = firebase.firestore().collection("events")
+        let snapshot = await docRef.where("location", ">", lesserGeopoint).where("location", "<", greaterGeopoint).where("ownerUid", ">", myUid).where("ownerUid", "<", myUid).get();
+        
+        return snapshot.docs.map(doc => doc.data() as CustomEventWrapper);
+    }
+
 
     public async getAllOwnEvents(): Promise<CustomEventWrapper[]> {
         const myUid = await this.authService.getUID();

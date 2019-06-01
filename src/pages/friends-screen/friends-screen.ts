@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DatabaseService } from '../../services/database.service';
 import { AlertController } from 'ionic-angular';
 import User from '../wrapers/user';
+import { SingleGoogleMapsPage } from '../single-google-maps/single-google-maps.page';
 
 /**
  * Generated class for the FriendsScreenPage page.
@@ -43,8 +44,17 @@ export class FriendsScreenPage {
 				{
 					text: 'Pokaż na mapie',
 					handler: data => {
-            console.log("Poka");
-            console.log(user);
+						if (user.status > 0){
+							this.navCtrl.push(SingleGoogleMapsPage,{
+								user:user
+								});
+						} else {
+							this.alertCtrl.create({
+								title: 'Nie można pokazać lokalizacji',
+								message: 'Użytkownik w tym momencie jest niewidoczny na mapie',
+								buttons: ['Ok']
+							}).present()
+						}         
           }
         },
         {
